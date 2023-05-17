@@ -1,9 +1,9 @@
 # Titel van project
 
-**VOORNAAM NAAM:** A B
+**VOORNAAM NAAM:** Lennard Verhaege
 
-**Sparringpartner:** C D
+**Sparringpartner:** Hanne Hellin
 
-**Projectsamenvatting in max 10 woorden:** E
+**Projectsamenvatting in max 10 woorden:** Slim kippensysteem met monitoring, voedersysteem en automatisch luik
 
-**Projecttitel:** F
+**Projecttitel:** EiQ
