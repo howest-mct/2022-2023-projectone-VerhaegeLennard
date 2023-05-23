@@ -1,5 +1,4 @@
 from RPi import GPIO
-from smbus import SMBus
 from time import sleep
 from SGP30 import SGP30
 
@@ -11,7 +10,8 @@ def setup():
 try:
     setup()
     while True:
-        print(sgp30.iaq_measure())
+        print("TVOC (in ppb):", sgp30.TVOC)
+        print("eCO2 (in ppm):", sgp30.eCO2)
 
 except KeyboardInterrupt as e:
     print(e)

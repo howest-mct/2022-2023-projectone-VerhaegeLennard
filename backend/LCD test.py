@@ -1,13 +1,13 @@
 import time
 from RPi import GPIO
-from LCD_metPCF import LCD
+from lcd import LCD
 
-lcd = LCD(17,22)
+lcd = LCD(17,22,27)
 
 lcd.init_LCD()
 
-lcd.write_message("HALLO")
+lcd.write_message("Hallowkes")
 
-time.sleep(10)
+time.sleep(5)
 
 GPIO.cleanup()

@@ -4,9 +4,10 @@ import time
 
 class LCD:
         #bij het aanmaken, stel je de parameters in
-        def __init__(self, rs_pin, e_pin):
+        def __init__(self, rs_pin, e_pin, rw_pin):
             self.rs_pin = rs_pin
             self.e_pin = e_pin
+            self.rw_pin = rw_pin
             
             #open de i2c bus
             self.i2c = SMBus()
@@ -19,7 +20,8 @@ class LCD:
         def setup(self):
             #alle pinnen instellen
             GPIO.setmode(GPIO.BCM)
-            GPIO.setup((self.rs_pin, self.e_pin), GPIO.OUT)
+            GPIO.setup((self.rs_pin, self.e_pin, self.rw_pin), GPIO.OUT)
+            GPIO.output(self.rw_pin, GPIO.LOW)
             
         def set_data_bits(self, byte):
             #ZONDER PCF:
