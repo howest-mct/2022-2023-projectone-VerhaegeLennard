@@ -1,6 +1,6 @@
 from RPi import GPIO
 from time import sleep
-from SGP30 import SGP30
+from helpers.SGP30 import SGP30
 
 sgp30 = SGP30(0x58)
 
