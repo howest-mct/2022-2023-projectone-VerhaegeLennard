@@ -4,6 +4,28 @@ from repositories.DataRepository import DataRepository
 from flask import Flask, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+from helpers.BH1750 import BH1750
+
+bh1750 = BH1750(0x23)
+
+
+def setup():
+    bh1750.powerOn()
+
+try:
+    setup()
+    while True:
+        pass
+
+except KeyboardInterrupt as e:
+    print(e)
+
+finally:
+    print("klaar")
+
+
+
+
 
 # Custom endpoint
 ENDPOINT = '/api/v1'

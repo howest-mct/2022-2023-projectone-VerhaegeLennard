@@ -20,4 +20,10 @@ class DataRepository:
         sql = "SELECT * from historiek WHERE DeviceId = %s"
         params = [id]
         return Database.get_rows(sql, params)
+    
+    @staticmethod
+    def add_history(device_id,actie_id,tijd,waarde,commentaar):
+        sql = "INSERT INTO historiek (DeviceId, ActieId, DatumTijd, Waarde, Commentaar) VALUES (%s,%s,%s,%s,%s)"
+        params = [device_id,actie_id,tijd,waarde,commentaar]
+        return Database.execute_sql(sql,params)
 

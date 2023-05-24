@@ -7,14 +7,28 @@ const listenToUI = function () {};
 
 // #region ***  Callback-Visualisation - show___         ***********
 const showDevices = function (jsonObject) {
-  let htmldevicebtns = document.querySelector('.js-devicebtns')
+  let htmlDeviceBtns = document.querySelector('.js-devicebtns')
   let html = ""
   for (let device of jsonObject) {
     html += `<button class="c-btn js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
   }
   console.info(html)
-  htmldevicebtns.innerHTML = html
+  htmlDeviceBtns.innerHTML = html
   listenToBtnDevice()
+}
+
+const showHistory = function (jsonObject) {
+  let htmlDeviceHistory = document.querySelector('.js-history')
+  let html = "<table><tr><td>Timestamp</td><td>Value</td><td>Comment</td></tr>"
+  for (const log of jsonObject) {
+    html += `<tr>
+    <td>${log.DatumTijd}</td>
+    <td>${log.Waarde}</td>
+    <td>${log.Commentaar}</td>
+  </tr>`
+  }
+  html += "</table>"
+  htmlDeviceHistory.innerHTML = html
 }
 
 const showError = function () {
@@ -47,7 +61,7 @@ const listenToBtnDevice = function () {
   for (const btn of btns)
     btn.addEventListener('click', function () {
       console.log('Device ID: ',btn.getAttribute('data-id'));
-      getDeviceHistory()
+      getDeviceHistory(btn.getAttribute('data-id'))
     })
 }
 // #endregion
