@@ -1,4 +1,4 @@
-from backend.helpers.BH1750 import BH1750
+from helpers.BH1750 import BH1750
 from time import sleep
 
 bh1750 = BH1750(0x23)
