@@ -52,6 +52,11 @@ def get_devices():
     data = DataRepository.read_all_devices()
     return jsonify(data), 200
 
+@app.route(ENDPOINT + '/devices/<id>/', methods=['GET'])
+def get_device_by_id(id):
+    data = DataRepository.read_history_by_deviceid(id)
+    return jsonify(data), 200
+
 # SOCKET IO
 
 

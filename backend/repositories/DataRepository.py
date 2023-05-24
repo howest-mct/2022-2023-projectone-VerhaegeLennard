@@ -19,5 +19,5 @@ class DataRepository:
     def read_history_by_deviceid(id):
         sql = "SELECT * from historiek WHERE DeviceId = %s"
         params = [id]
-        return Database.get_one_row(sql, params)
+        return Database.get_rows(sql, params)
 
