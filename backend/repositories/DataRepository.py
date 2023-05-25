@@ -20,6 +20,12 @@ class DataRepository:
         sql = "SELECT * from historiek WHERE DeviceId = %s"
         params = [id]
         return Database.get_rows(sql, params)
+
+    @staticmethod
+    def read_last_device_history(id):
+        sql = "SELECT * from historiek WHERE DeviceId = %s ORDER BY Volgnummer desc LIMIT 1"
+        params = [id]
+        return Database.get_one_row(sql,params)
     
     @staticmethod
     def add_history(device_id,actie_id,waarde,commentaar):
