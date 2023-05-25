@@ -22,8 +22,8 @@ class DataRepository:
         return Database.get_rows(sql, params)
     
     @staticmethod
-    def add_history(device_id,actie_id,tijd,waarde,commentaar):
-        sql = "INSERT INTO historiek (DeviceId, ActieId, DatumTijd, Waarde, Commentaar) VALUES (%s,%s,%s,%s,%s)"
-        params = [device_id,actie_id,tijd,waarde,commentaar]
+    def add_history(device_id,actie_id,waarde,commentaar):
+        sql = "INSERT INTO historiek (DeviceId, ActieId, Waarde, Commentaar) VALUES (%s,%s,%s,%s)"
+        params = [device_id,actie_id,waarde,commentaar]
         return Database.execute_sql(sql,params)
 

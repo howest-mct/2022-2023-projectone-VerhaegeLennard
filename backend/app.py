@@ -1,30 +1,19 @@
 import threading
 import time
+from datetime import datetime
 from repositories.DataRepository import DataRepository
 from flask import Flask, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from helpers.BH1750 import BH1750
+from helpers.SGP30 import SGP30
+from helpers.DHT20 import DHT20
+from helpers.lcd import LCD
 
 bh1750 = BH1750(0x23)
-
-
-def setup():
-    bh1750.powerOn()
-
-try:
-    setup()
-    while True:
-        pass
-
-except KeyboardInterrupt as e:
-    print(e)
-
-finally:
-    print("klaar")
-
-
-
+sgp30 = SGP30(0x58)
+dht20 = DHT20(0x38)
+lcd = LCD(17,22,27)
 
 
 # Custom endpoint
@@ -41,26 +30,36 @@ CORS(app)
 
 # # START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
 # # werk enkel met de packages gevent en gevent-websocket.
-# def all_out():
-#     # wait 10s with sleep sintead of threading.Timer, so we can use daemon
-#     time.sleep(10)
-#     while True:
-#         print('*** We zetten alles uit **')
-#         DataRepository.update_status_alle_lampen(0)
-#         status = DataRepository.read_status_lampen()
-#         socketio.emit('B2F_alles_uit', {
-#                     'status': "lampen uit"})
-#         socketio.emit('B2F_status_lampen', {'lampen': status})
-#         # save our last run time
-#         last_time_alles_uit = now
-#         time.sleep(30)
+def read_sensors():
+    # wait 10s with sleep sintead of threading.Timer, so we can use daemon
+    time.sleep(10)
+    read_sensors_last_run = time.time()
+    while True:
+        now = time.time()
+        lichtintensiteit = bh1750.lux
+        eCO2 = sgp30.eCO2
+        TVOC = sgp30.TVOC
+        temperatuur = dht20.Temperatuur
+        luchtvochtigheid = dht20.Humidity
+        if read_sensors_last_run + 10 <= now:
+            DataRepository.add_history(device_id=6,actie_id=5,waarde=lichtintensiteit, commentaar=None)
+            DataRepository.add_history(device_id=7,actie_id=8,waarde=eCO2, commentaar=None)
+            DataRepository.add_history(device_id=8,actie_id=9,waarde=TVOC, commentaar=None)
+            # print('*** We zetten alles uit **')
+            # DataRepository.update_status_alle_lampen(0)
+            # GPIO.output(ledpin, 0)
+            # status = DataRepository.read_status_lampen()
+            # socketio.emit('B2F_alles_uit', {
+            #     'status': "lampen uit"})
+            # socketio.emit('B2F_status_lampen', {'lampen': status})
+            read_sensors_last_run = now
 
 
-# def start_thread():
-#     # threading.Timer(10, all_out).start()
-#     t = threading.Thread(target=all_out, daemon=True)
-#     t.start()
-#     print("thread started")
+def start_thread():
+    # threading.Timer(10, all_out).start()
+    t = threading.Thread(target=read_sensors, daemon=True)
+    t.start()
+    print("thread reading sensors started")
 
 
 # API ENDPOINTS
@@ -113,7 +112,7 @@ def initial_connection():
 
 if __name__ == '__main__':
     try:
-        # start_thread()
+        start_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
     except KeyboardInterrupt:
