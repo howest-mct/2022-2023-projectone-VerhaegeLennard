@@ -86,7 +86,7 @@ def read_sensors():
         TVOC = sgp30.TVOC
         temperatuur = dht20.Temperatuur
         luchtvochtigheid = dht20.Humidity
-        if read_sensors_last_run + 10 <= now:
+        if read_sensors_last_run + 30 <= now:
             DataRepository.add_history(device_id=6,actie_id=5,waarde=lichtintensiteit, commentaar=None)
             DataRepository.add_history(device_id=7,actie_id=8,waarde=eCO2, commentaar=None)
             DataRepository.add_history(device_id=8,actie_id=9,waarde=TVOC, commentaar=None)
