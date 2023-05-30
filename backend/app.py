@@ -18,29 +18,61 @@ sgp30 = SGP30(0x58)
 dht20 = DHT20(0x38)
 lcd = LCD(17,22,27)
 motor_deur = Stappenmotor(12,16,20,21)
+motor_voer = Stappenmotor(6,13,19,26)
 
+pushButtonLuik = 23
+pushButtonVoer = 24
 
-pushButton = 23
+status_knop_luik = 0
+status_knop_voer = 0
 
 def pushButton_callback(channel):
-    DataRepository.add_history(device_id=2,actie_id=6,waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
+    global status_knop_luik, status_knop_voer
+    if channel == 23:
+        if GPIO.input(channel) == 1:
+            status_knop_luik = 1
+            print("LUIK")
+    if channel == 24:
+        if GPIO.input(channel) == 1:
+            status_knop_voer = 1
+            print("VOER")
+            
+    
+if status_knop_luik == 1:
+    DataRepository.add_history(device_id=2, actie_id=6, waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
     data = DataRepository.read_last_device_history(4)
     status_luik = data['ActieId']
-    print(status_luik)
     if status_luik == 10:
         print("De deur gaat DICHT")
-        motor_deur.draai(-500,0.001)
-        DataRepository.add_history(device_id=4,actie_id=11,waarde=0, commentaar="Het luik werd gesloten")
+        motor_deur.draai(-500, 0.001)
+        DataRepository.add_history(
+            device_id=4, actie_id=11, waarde=0, commentaar="Het luik werd gesloten")
         status_luik = 0
-    print(status_luik)
     if status_luik == 11:
         print("De deur gaat OPEN")
-        motor_deur.draai(500,0.001)
-        DataRepository.add_history(device_id=4,actie_id=10,waarde=0, commentaar="Het luik werd geopend")
+        motor_deur.draai(500, 0.001)
+        DataRepository.add_history(
+            device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
         status_luik = 0
-    print(status_luik)
-    
+    status_knop_luik == 0
 
+if status_knop_voer == 1:
+    # DataRepository.add_history(device_id=2, actie_id=6, waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
+    # data = DataRepository.read_last_device_history(4)
+    # status_luik = data['ActieId']
+    # if status_luik == 10:
+    #     print("De deur gaat DICHT")
+    #     motor_deur.draai(-500, 0.001)
+    #     DataRepository.add_history(
+    #         device_id=4, actie_id=11, waarde=0, commentaar="Het luik werd gesloten")
+    #     status_luik = 0
+    # if status_luik == 11:
+    #     print("De deur gaat OPEN")
+    #     motor_deur.draai(500, 0.001)
+    #     DataRepository.add_history(
+    #         device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
+    #     status_luik = 0
+    status_knop_voer == 0
 
 def toonOpLCD():
     lcd.send_instruction(0b00000001) #wis het scherm
@@ -57,9 +89,10 @@ def toonOpLCD():
 toonOpLCD()
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pushButton, GPIO.IN, GPIO.PUD_UP)
+GPIO.setup((pushButtonLuik,pushButtonVoer), GPIO.IN, GPIO.PUD_UP)
 
-GPIO.add_event_detect(pushButton, GPIO.FALLING, pushButton_callback, bouncetime=200)
+GPIO.add_event_detect(pushButtonLuik, GPIO.FALLING, pushButton_callback, bouncetime=200)
+GPIO.add_event_detect(pushButtonVoer, GPIO.FALLING, pushButton_callback, bouncetime=200)
 
 # Custom endpoint
 ENDPOINT = '/api/v1'
@@ -86,7 +119,7 @@ def read_sensors():
         TVOC = sgp30.TVOC
         temperatuur = dht20.Temperatuur
         luchtvochtigheid = dht20.Humidity
-        if read_sensors_last_run + 30 <= now:
+        if read_sensors_last_run + 10 <= now:
             DataRepository.add_history(device_id=6,actie_id=5,waarde=lichtintensiteit, commentaar=None)
             DataRepository.add_history(device_id=7,actie_id=8,waarde=eCO2, commentaar=None)
             DataRepository.add_history(device_id=8,actie_id=9,waarde=TVOC, commentaar=None)
