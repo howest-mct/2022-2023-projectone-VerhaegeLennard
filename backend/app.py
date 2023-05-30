@@ -1,19 +1,65 @@
 import threading
 import time
-from datetime import datetime
+import datetime
 from repositories.DataRepository import DataRepository
 from flask import Flask, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+from RPi import GPIO
 from helpers.BH1750 import BH1750
 from helpers.SGP30 import SGP30
 from helpers.DHT20 import DHT20
 from helpers.lcd import LCD
+from helpers.Stappenmotor import Stappenmotor
+from subprocess import check_output
 
 bh1750 = BH1750(0x23)
 sgp30 = SGP30(0x58)
 dht20 = DHT20(0x38)
 lcd = LCD(17,22,27)
+motor_deur = Stappenmotor(12,16,20,21)
+
+
+pushButton = 23
+
+def pushButton_callback(channel):
+    DataRepository.add_history(device_id=2,actie_id=6,waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
+    data = DataRepository.read_last_device_history(4)
+    status_luik = data['ActieId']
+    print(status_luik)
+    if status_luik == 10:
+        print("De deur gaat DICHT")
+        motor_deur.draai(-500,0.001)
+        DataRepository.add_history(device_id=4,actie_id=11,waarde=0, commentaar="Het luik werd gesloten")
+        status_luik = 0
+    print(status_luik)
+    if status_luik == 11:
+        print("De deur gaat OPEN")
+        motor_deur.draai(500,0.001)
+        DataRepository.add_history(device_id=4,actie_id=10,waarde=0, commentaar="Het luik werd geopend")
+        status_luik = 0
+    print(status_luik)
+    
+
+
+def toonOpLCD():
+    lcd.send_instruction(0b00000001) #wis het scherm
+    #Haal de ip adressen op, split ze per ip
+    byte_ips = check_output(['hostname','--all-ip-addresses'])
+    ips = byte_ips.decode("utf-8")
+    adresses = ips.split(" ")
+    #stuur op de eerste lijn de 1e ip
+    lcd.write_message(adresses[0])
+    #selecteer de 2de lijn en zend de 2de ip
+    lcd.send_instruction(0b11000000)
+    lcd.write_message(adresses[1])
+
+toonOpLCD()
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pushButton, GPIO.IN, GPIO.PUD_UP)
+
+GPIO.add_event_detect(pushButton, GPIO.FALLING, pushButton_callback, bouncetime=200)
 
 # Custom endpoint
 ENDPOINT = '/api/v1'
@@ -116,3 +162,4 @@ if __name__ == '__main__':
         print('KeyboardInterrupt exception is caught')
     finally:
         print("finished")
+        GPIO.cleanup()
