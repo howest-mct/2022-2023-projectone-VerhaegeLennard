@@ -158,10 +158,14 @@ def get_devices():
     data = DataRepository.read_all_devices()
     return jsonify(data), 200
 
-
 @app.route(ENDPOINT + '/devices/<id>/', methods=['GET'])
 def get_device_by_id(id):
     data = DataRepository.read_history_by_deviceid(id)
+    return jsonify(data), 200
+
+@app.route(ENDPOINT + '/timeline/', methods=['GET'])
+def get_timeline_history():
+    data = DataRepository.read_history_timeline()
     return jsonify(data), 200
 
 # SOCKET IO
@@ -170,6 +174,7 @@ def get_device_by_id(id):
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
+    # socketio.emit('B2F_new_sensor_values', {'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
     # # Send to the client!
     # vraag alle devices op uit de db
     # devices = DataRepository.read_all_devices()

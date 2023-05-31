@@ -1,7 +1,6 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 
-const listenToUI = function () {};
 // #region ***  DOM references                           ***********
 // #endregion
 
@@ -42,6 +41,27 @@ const showNewSensorValues = function (jsonObject) {
   htmlBrightness.innerHTML = jsonObject.lichtintensiteit
 }
 
+const showTimeline = function (jsonObject) {
+  console.log(jsonObject)
+  const htmlTimeline = document.querySelector('.js-timeline')
+  let html = ""
+  for (const log of jsonObject) {
+    console.info(log.Commentaar)
+    html += `<li class="c-timeline__item">
+    <div class="c-timeline__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+            <path d="m438 816 226-226-58-58-169 169-84-84-57 57 142 142ZM240 976q-33 0-56.5-23.5T160 896V256q0-33 23.5-56.5T240 176h320l240 240v480q0 33-23.5 56.5T720 976H240Zm280-520V256H240v640h480V456H520ZM240 256v200-200 640-640Z" />
+        </svg>
+    </div>
+    <div class="c-timeline__body">
+        <time class="c-timeline__time u-color-text-lighter" datetime="${log.DatumTijd}">${log.DatumTijd}</time>
+        <p class="c-timeline__action">${log.Commentaar}</p>
+    </div>
+</li>`
+  }
+htmlTimeline.innerHTML = html
+}
+
 const showError = function () {
   console.error(error);
 };
@@ -58,6 +78,10 @@ const getDevices = function () {
 const getDeviceHistory = function(id) {
   handleData(`http://192.168.168.169:5000/api/v1/devices/${id}/`, showHistory, showError)
 }
+
+const getTimeline = function() {
+  handleData(`http://192.168.168.169:5000/api/v1/timeline/`, showTimeline, showError)
+}
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
@@ -68,6 +92,9 @@ const listenToSocket = function () {
   socketio.on('B2F_new_sensor_values', function (jsonObject) {
     showNewSensorValues(jsonObject)
   });
+  // socketio.on('B2F_new_timeline_item', function (jsonObject) {
+  //   showTimeline(jsonObject)
+  // });
 };
 
 const listenToBtnDevice = function () {
@@ -78,6 +105,8 @@ const listenToBtnDevice = function () {
       getDeviceHistory(btn.getAttribute('data-id'))
     })
 }
+
+const listenToUI = function () {};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
@@ -89,6 +118,7 @@ const init = function () {
 
   if (htmlDashboard) {
     listenToSocket();
+    getTimeline()
   }
 
   if (htmlHistory) {
