@@ -111,6 +111,7 @@ CORS(app)
 # # START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
 # # werk enkel met de packages gevent en gevent-websocket.
 def read_sensors():
+    # global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
     # wait 10s with sleep sintead of threading.Timer, so we can use daemon
     time.sleep(10)
     read_sensors_last_run = time.time()
@@ -132,9 +133,8 @@ def read_sensors():
                 device_id=9, actie_id=3, waarde=temperatuur, commentaar=None)
             DataRepository.add_history(
                 device_id=10, actie_id=4, waarde=luchtvochtigheid, commentaar=None)
-            # socketio.emit('B2F_alles_uit', {
-            #     'status': "lampen uit"})
-            # socketio.emit('B2F_status_lampen', {'lampen': status})
+            socketio.emit('B2F_new_sensor_values', {
+                'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
             read_sensors_last_run = now
 
 

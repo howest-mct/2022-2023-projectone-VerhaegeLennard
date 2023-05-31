@@ -31,6 +31,17 @@ const showHistory = function (jsonObject) {
   htmlDeviceHistory.innerHTML = html
 }
 
+const showNewSensorValues = function (jsonObject) {
+  let htmlTempValue = document.querySelector('.js-temperature')
+  let htmlCo2Value = document.querySelector('.js-co2value')
+  let htmlHumidity = document.querySelector('.js-humidity')
+  let htmlBrightness = document.querySelector('.js-brightness')
+  htmlTempValue.innerHTML = jsonObject.temperatuur
+  htmlCo2Value.innerHTML = jsonObject.eCO2
+  htmlHumidity.innerHTML = jsonObject.luchtvochtigheid
+  htmlBrightness.innerHTML = jsonObject.lichtintensiteit
+}
+
 const showError = function () {
   console.error(error);
 };
@@ -54,10 +65,9 @@ const listenToSocket = function () {
   socketio.on('connect', function () {
     console.log('verbonden met socket webserver');
   });
-  // socketio.on('B2F_connected', function (jsonObject) {
-  //   console.info(jsonObject.devices)
-  //   showDevices(jsonObject.devices)
-  // });
+  socketio.on('B2F_new_sensor_values', function (jsonObject) {
+    showNewSensorValues(jsonObject)
+  });
 };
 
 const listenToBtnDevice = function () {
@@ -77,7 +87,9 @@ const init = function () {
   const htmlDashboard = document.querySelector('.js-dashboard')
   const htmlHistory = document.querySelector('.js-history');
 
-  if (htmlDashboard) {}
+  if (htmlDashboard) {
+    listenToSocket();
+  }
 
   if (htmlHistory) {
     getDevices()
@@ -85,7 +97,6 @@ const init = function () {
   }
 
   listenToUI();
-  listenToSocket();
 };
 
 document.addEventListener('DOMContentLoaded', init);
