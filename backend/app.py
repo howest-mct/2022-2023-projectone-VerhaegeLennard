@@ -42,13 +42,13 @@ def pushButtonLuik_callback(channel):
     global status_knop_luik
     # if GPIO.input(channel) == 1:
     status_knop_luik = 1
-    print("LUIK")
+    # print("LUIK")
 
 def pushButtonVoer_callback(channel):
     global status_knop_voer
     # if GPIO.input(channel) == 1:
     status_knop_voer = 1
-    print("VOER")
+    # print("VOER")
 
 def setup():
     toonOpLCD()
@@ -85,7 +85,8 @@ def run_hardware():
                 DataRepository.add_history(
                     device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
                 status_luik = 0
-        status_knop_luik = 0
+            status_knop_luik = 0
+            socketio.emit('B2F_new_timeline')
 
         if status_knop_voer == 1:
             DataRepository.add_history(
@@ -94,7 +95,8 @@ def run_hardware():
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
                 device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
-        status_knop_voer = 0
+            status_knop_voer = 0
+            socketio.emit('B2F_new_timeline')
 
 # Custom endpoint
 ENDPOINT = '/api/v1'

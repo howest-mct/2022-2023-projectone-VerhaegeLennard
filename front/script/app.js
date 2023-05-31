@@ -92,9 +92,9 @@ const listenToSocket = function () {
   socketio.on('B2F_new_sensor_values', function (jsonObject) {
     showNewSensorValues(jsonObject)
   });
-  // socketio.on('B2F_new_timeline_item', function (jsonObject) {
-  //   showTimeline(jsonObject)
-  // });
+  socketio.on('B2F_new_timeline', function () {
+    getTimeline()
+  });
 };
 
 const listenToBtnDevice = function () {
