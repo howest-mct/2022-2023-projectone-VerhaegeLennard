@@ -98,7 +98,7 @@ const listenToSocket = function () {
 };
 
 const listenToBtnDevice = function () {
-  btns = document.querySelectorAll('.js-btndevice')
+  const btns = document.querySelectorAll('.js-btndevice')
   for (const btn of btns)
     btn.addEventListener('click', function () {
       console.log('Device ID: ',btn.getAttribute('data-id'));
@@ -106,7 +106,14 @@ const listenToBtnDevice = function () {
     })
 }
 
-const listenToUI = function () {};
+const listenToUI = function () {
+  const buttons = document.querySelectorAll('.js-button')
+  for (const btn of buttons)
+    btn.addEventListener('click', function () {
+      console.log('Button ID: ',btn.getAttribute('data-id'));
+      socketio.emit('F2B_toggle_motor',{buttonId:btn.getAttribute('data-id')})
+    })
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********

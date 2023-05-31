@@ -93,7 +93,7 @@ def run_hardware():
             print("Er wordt voer gegeven")
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
-                device_id=5, actie_id=2, waarde=1, commentaar="Er wordt 1 portie voer gegeven")
+                device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
         status_knop_voer = 0
 
 # Custom endpoint
@@ -183,22 +183,26 @@ def initial_connection():
     # emit('B2F_status_lampen', {'lampen': status}, broadcast=False)
 
 
-# @socketio.on('F2B_switch_light')
-# def switch_light(data):
-#     print('licht gaat aan/uit', data)
-#     lamp_id = data['lamp_id']
-#     new_status = data['new_status']
-#     # spreek de hardware aan
-#     # stel de status in op de DB
-#     res = DataRepository.update_status_lamp(lamp_id, new_status)
-#     print(res)
-#     # vraag de (nieuwe) status op van de lamp
-#     data = DataRepository.read_status_lamp_by_id(lamp_id)
-#     socketio.emit('B2F_verandering_lamp',  {'lamp': data})
-#     # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
-#     if lamp_id == '3':
-#         print(f"TV kamer moet switchen naar {new_status} !")
-#         # Do something
+@socketio.on('F2B_toggle_motor')
+def control_motor(data):
+    global status_knop_voer, status_knop_luik
+    print('Een motor wordt aangestuurd:', data)
+    motor_id = data['buttonId']
+    if motor_id == 'feeder':
+        status_knop_voer = 1
+    elif motor_id == 'door':
+        status_knop_luik = 1
+    # spreek de hardware aan
+    # stel de status in op de DB
+    # res = DataRepository.update_status_lamp(lamp_id, new_status)
+    # print(res)
+    # # vraag de (nieuwe) status op van de lamp
+    # data = DataRepository.read_status_lamp_by_id(lamp_id)
+    # socketio.emit('B2F_verandering_lamp',  {'lamp': data})
+    # # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
+    # if lamp_id == '3':
+    #     print(f"TV kamer moet switchen naar {new_status} !")
+    #     # Do something
 
 
 if __name__ == '__main__':
