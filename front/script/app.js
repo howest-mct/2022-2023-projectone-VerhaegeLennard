@@ -18,7 +18,7 @@ const showDevices = function (jsonObject) {
 }
 
 const showHistory = function (jsonObject) {
-  let htmlDeviceHistory = document.querySelector('.js-history')
+  let htmlDeviceHistory = document.querySelector('.js-history__list')
   let html = "<table><tr><td>Timestamp</td><td>Value</td><td>Comment</td></tr>"
   for (const log of jsonObject) {
     html += `<tr>
@@ -40,6 +40,10 @@ const showError = function () {
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
+const getDevices = function () {
+  handleData(`http://192.168.168.169:5000/api/v1/devices/`, showDevices, showError)
+}
+
 const getDeviceHistory = function(id) {
   handleData(`http://192.168.168.169:5000/api/v1/devices/${id}/`, showHistory, showError)
 }
@@ -50,10 +54,10 @@ const listenToSocket = function () {
   socketio.on('connect', function () {
     console.log('verbonden met socket webserver');
   });
-  socketio.on('B2F_connected', function (jsonObject) {
-    console.info(jsonObject.devices)
-    showDevices(jsonObject.devices)
-  });
+  // socketio.on('B2F_connected', function (jsonObject) {
+  //   console.info(jsonObject.devices)
+  //   showDevices(jsonObject.devices)
+  // });
 };
 
 const listenToBtnDevice = function () {
@@ -69,6 +73,17 @@ const listenToBtnDevice = function () {
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   console.info('DOM geladen');
+
+  const htmlDashboard = document.querySelector('.js-dashboard')
+  const htmlHistory = document.querySelector('.js-history');
+
+  if (htmlDashboard) {}
+
+  if (htmlHistory) {
+    getDevices()
+    getDeviceHistory()
+  }
+
   listenToUI();
   listenToSocket();
 };

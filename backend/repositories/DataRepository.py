@@ -17,7 +17,7 @@ class DataRepository:
 
     @staticmethod
     def read_history_by_deviceid(id):
-        sql = "SELECT * from historiek WHERE DeviceId = %s"
+        sql = "SELECT * from historiek WHERE DeviceId = %s ORDER BY volgnummer desc LIMIT 50"
         params = [id]
         return Database.get_rows(sql, params)
 

@@ -172,8 +172,8 @@ def initial_connection():
     print('A new client connect')
     # # Send to the client!
     # vraag alle devices op uit de db
-    devices = DataRepository.read_all_devices()
-    emit('B2F_connected', {'devices': devices})
+    # devices = DataRepository.read_all_devices()
+    # emit('B2F_connected', {'devices': devices})
     # Beter is het om enkel naar de client te sturen die de verbinding heeft gemaakt.
     # emit('B2F_status_lampen', {'lampen': status}, broadcast=False)
 
