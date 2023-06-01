@@ -61,7 +61,7 @@ class LCD:
             teller = 0
             for letter in message:
                 teller = teller + 1
-                if teller == 16:
+                if teller == 17:
                     self.send_instruction(0b11000000)
                 if teller > 32:
                     self.send_instruction(0b00011000)

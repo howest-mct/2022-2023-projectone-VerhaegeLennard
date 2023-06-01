@@ -71,7 +71,6 @@ def run_hardware():
                 device_id=2, actie_id=6, waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
             data = DataRepository.read_last_device_history(4)
             status_luik = data['ActieId']
-            print(status_luik)
 
             if status_luik == 10:
                 print("De deur gaat DICHT")
@@ -79,7 +78,7 @@ def run_hardware():
                     device_id=4, actie_id=11, waarde=0, commentaar="Het luik werd gesloten")
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
-                lcd.write_message("Door closing...")
+                lcd.write_message("Door closing ...")
                 motor_deur.draai(-500, 0.001)
                 status_luik = 0
             if status_luik == 11:
@@ -88,7 +87,7 @@ def run_hardware():
                     device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
-                lcd.write_message("Door opening...")
+                lcd.write_message("Door opening ...")
                 motor_deur.draai(500, 0.001)
                 status_luik = 0
             status_knop_luik = 0
@@ -100,7 +99,7 @@ def run_hardware():
             socketio.emit('B2F_new_timeline')
             print("Er wordt voer gegeven")
             lcd.send_instruction(0b00000001)
-            lcd.write_message("Food dispencing...")
+            lcd.write_message("Grain dispencing...")
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
                 device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
