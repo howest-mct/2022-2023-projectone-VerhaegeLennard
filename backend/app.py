@@ -78,6 +78,8 @@ def run_hardware():
                 DataRepository.add_history(
                     device_id=4, actie_id=11, waarde=0, commentaar="Het luik werd gesloten")
                 socketio.emit('B2F_new_timeline')
+                lcd.send_instruction(0b00000001)
+                lcd.write_message("Door closing...")
                 motor_deur.draai(-500, 0.001)
                 status_luik = 0
             if status_luik == 11:
@@ -85,19 +87,25 @@ def run_hardware():
                 DataRepository.add_history(
                     device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
                 socketio.emit('B2F_new_timeline')
+                lcd.send_instruction(0b00000001)
+                lcd.write_message("Door opening...")
                 motor_deur.draai(500, 0.001)
                 status_luik = 0
             status_knop_luik = 0
+            toonOpLCD()
 
         if status_knop_voer == 1:
             DataRepository.add_history(
                 device_id=11, actie_id=12, waarde=1, commentaar="Pushbutton voer bedienen ingedrukt")
             socketio.emit('B2F_new_timeline')
             print("Er wordt voer gegeven")
+            lcd.send_instruction(0b00000001)
+            lcd.write_message("Food dispencing...")
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
                 device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
             status_knop_voer = 0
+            toonOpLCD()
 
 # Custom endpoint
 ENDPOINT = '/api/v1'
