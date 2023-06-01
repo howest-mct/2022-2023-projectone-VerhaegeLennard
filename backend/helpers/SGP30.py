@@ -25,7 +25,7 @@ class SGP30:
         """Init van de sensor"""
         self.i2c.write_i2c_block_data(self._address, 0x20, [0x03, 0x00])
         #Geef de sensor 15 seconden om op te starten
-        sleep(15)
+        # sleep(15)
 
     def iaq_measure(self) -> List[int]:
         """meet eCO2 & TVOC"""
