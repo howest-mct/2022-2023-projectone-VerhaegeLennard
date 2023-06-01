@@ -42,13 +42,13 @@ def pushButtonLuik_callback(channel):
     global status_knop_luik
     # if GPIO.input(channel) == 1:
     status_knop_luik = 1
-    print("LUIK")
+    # print("LUIK")
 
 def pushButtonVoer_callback(channel):
     global status_knop_voer
     # if GPIO.input(channel) == 1:
     status_knop_voer = 1
-    print("VOER")
+    # print("VOER")
 
 def setup():
     toonOpLCD()
@@ -85,7 +85,8 @@ def run_hardware():
                 DataRepository.add_history(
                     device_id=4, actie_id=10, waarde=0, commentaar="Het luik werd geopend")
                 status_luik = 0
-        status_knop_luik = 0
+            status_knop_luik = 0
+            socketio.emit('B2F_new_timeline')
 
         if status_knop_voer == 1:
             DataRepository.add_history(
@@ -93,8 +94,9 @@ def run_hardware():
             print("Er wordt voer gegeven")
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
-                device_id=5, actie_id=2, waarde=1, commentaar="Er wordt 1 portie voer gegeven")
-        status_knop_voer = 0
+                device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
+            status_knop_voer = 0
+            socketio.emit('B2F_new_timeline')
 
 # Custom endpoint
 ENDPOINT = '/api/v1'
@@ -111,6 +113,7 @@ CORS(app)
 # # START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
 # # werk enkel met de packages gevent en gevent-websocket.
 def read_sensors():
+    # global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
     # wait 10s with sleep sintead of threading.Timer, so we can use daemon
     time.sleep(10)
     read_sensors_last_run = time.time()
@@ -132,9 +135,8 @@ def read_sensors():
                 device_id=9, actie_id=3, waarde=temperatuur, commentaar=None)
             DataRepository.add_history(
                 device_id=10, actie_id=4, waarde=luchtvochtigheid, commentaar=None)
-            # socketio.emit('B2F_alles_uit', {
-            #     'status': "lampen uit"})
-            # socketio.emit('B2F_status_lampen', {'lampen': status})
+            socketio.emit('B2F_new_sensor_values', {
+                'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
             read_sensors_last_run = now
 
 
@@ -158,10 +160,14 @@ def get_devices():
     data = DataRepository.read_all_devices()
     return jsonify(data), 200
 
-
 @app.route(ENDPOINT + '/devices/<id>/', methods=['GET'])
 def get_device_by_id(id):
     data = DataRepository.read_history_by_deviceid(id)
+    return jsonify(data), 200
+
+@app.route(ENDPOINT + '/timeline/', methods=['GET'])
+def get_timeline_history():
+    data = DataRepository.read_history_timeline()
     return jsonify(data), 200
 
 # SOCKET IO
@@ -170,30 +176,35 @@ def get_device_by_id(id):
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
+    # socketio.emit('B2F_new_sensor_values', {'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
     # # Send to the client!
     # vraag alle devices op uit de db
-    devices = DataRepository.read_all_devices()
-    emit('B2F_connected', {'devices': devices})
+    # devices = DataRepository.read_all_devices()
+    # emit('B2F_connected', {'devices': devices})
     # Beter is het om enkel naar de client te sturen die de verbinding heeft gemaakt.
     # emit('B2F_status_lampen', {'lampen': status}, broadcast=False)
 
 
-# @socketio.on('F2B_switch_light')
-# def switch_light(data):
-#     print('licht gaat aan/uit', data)
-#     lamp_id = data['lamp_id']
-#     new_status = data['new_status']
-#     # spreek de hardware aan
-#     # stel de status in op de DB
-#     res = DataRepository.update_status_lamp(lamp_id, new_status)
-#     print(res)
-#     # vraag de (nieuwe) status op van de lamp
-#     data = DataRepository.read_status_lamp_by_id(lamp_id)
-#     socketio.emit('B2F_verandering_lamp',  {'lamp': data})
-#     # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
-#     if lamp_id == '3':
-#         print(f"TV kamer moet switchen naar {new_status} !")
-#         # Do something
+@socketio.on('F2B_toggle_motor')
+def control_motor(data):
+    global status_knop_voer, status_knop_luik
+    print('Een motor wordt aangestuurd:', data)
+    motor_id = data['buttonId']
+    if motor_id == 'feeder':
+        status_knop_voer = 1
+    elif motor_id == 'door':
+        status_knop_luik = 1
+    # spreek de hardware aan
+    # stel de status in op de DB
+    # res = DataRepository.update_status_lamp(lamp_id, new_status)
+    # print(res)
+    # # vraag de (nieuwe) status op van de lamp
+    # data = DataRepository.read_status_lamp_by_id(lamp_id)
+    # socketio.emit('B2F_verandering_lamp',  {'lamp': data})
+    # # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
+    # if lamp_id == '3':
+    #     print(f"TV kamer moet switchen naar {new_status} !")
+    #     # Do something
 
 
 if __name__ == '__main__':
