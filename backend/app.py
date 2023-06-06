@@ -26,6 +26,12 @@ pushButtonVoer = 25
 status_knop_luik = 0
 status_knop_voer = 0
 
+lichtintensiteit = None
+eCO2 = None
+TVOC = None
+temperatuur = None
+luchtvochtigheid = None
+
 def toonOpLCD():
     lcd.send_instruction(0b00000001)  # wis het scherm
     # Haal de ip adressen op, split ze per ip
@@ -99,7 +105,7 @@ def run_hardware():
             socketio.emit('B2F_new_timeline')
             print("Er wordt voer gegeven")
             lcd.send_instruction(0b00000001)
-            lcd.write_message("Grain dispencing...")
+            lcd.write_message("Grain dispensing...")
             motor_voer.draai(-500, 0.001)
             DataRepository.add_history(
                 device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
@@ -121,7 +127,14 @@ CORS(app)
 # # START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
 # # werk enkel met de packages gevent en gevent-websocket.
 def read_sensors():
-    # global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
+    global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
+    lichtintensiteit = bh1750.lux
+    eCO2 = sgp30.eCO2
+    TVOC = sgp30.TVOC
+    temperatuur = dht20.Temperatuur
+    luchtvochtigheid = dht20.Humidity
+    # socketio.emit('B2F_new_sensor_values', {
+    #             'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
     # wait 10s with sleep sintead of threading.Timer, so we can use daemon
     time.sleep(10)
     read_sensors_last_run = time.time()
@@ -132,7 +145,7 @@ def read_sensors():
         TVOC = sgp30.TVOC
         temperatuur = dht20.Temperatuur
         luchtvochtigheid = dht20.Humidity
-        if read_sensors_last_run + 10 <= now:
+        if (read_sensors_last_run + 10 <= now):
             DataRepository.add_history(
                 device_id=6, actie_id=5, waarde=lichtintensiteit, commentaar=None)
             DataRepository.add_history(
@@ -179,12 +192,11 @@ def get_timeline_history():
     return jsonify(data), 200
 
 # SOCKET IO
-
-
 @socketio.on('connect')
 def initial_connection():
+    global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
     print('A new client connect')
-    # socketio.emit('B2F_new_sensor_values', {'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
+    socketio.emit('B2F_new_sensor_values', {'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
     # # Send to the client!
     # vraag alle devices op uit de db
     # devices = DataRepository.read_all_devices()
@@ -202,18 +214,6 @@ def control_motor(data):
         status_knop_voer = 1
     elif motor_id == 'door':
         status_knop_luik = 1
-    # spreek de hardware aan
-    # stel de status in op de DB
-    # res = DataRepository.update_status_lamp(lamp_id, new_status)
-    # print(res)
-    # # vraag de (nieuwe) status op van de lamp
-    # data = DataRepository.read_status_lamp_by_id(lamp_id)
-    # socketio.emit('B2F_verandering_lamp',  {'lamp': data})
-    # # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
-    # if lamp_id == '3':
-    #     print(f"TV kamer moet switchen naar {new_status} !")
-    #     # Do something
-
 
 if __name__ == '__main__':
     try:

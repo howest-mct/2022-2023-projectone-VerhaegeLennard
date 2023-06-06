@@ -1,6 +1,27 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 
+// var ChartTemp = NaN
+var TempMinValue = -10;
+var TempMaxValue = 40;
+var TempRange = 50;
+
+var CO2MinValue = 350
+var CO2MaxValue = 20000
+var CO2Range = 19650
+
+var BrightMinValue = 0;
+var BrightMaxValue = 15000;
+var BrightRange = 15000;
+
+const valueToPercent = function (value, maxValue, minValue) {
+  var range = Math.abs(maxValue - minValue);
+  var percentage = value/range*100
+  console.log(percentage)
+  return percentage
+} 
+
+
 // #region ***  DOM references                           ***********
 // #endregion
 
@@ -9,7 +30,7 @@ const showDevices = function (jsonObject) {
   let htmlDeviceBtns = document.querySelector('.js-devicebtns')
   let html = ""
   for (let device of jsonObject) {
-    html += `<button class="c-btn js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
+    html += `<button type="button" class="o-button-reset c-button c-button--meta js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
   }
   console.info(html)
   htmlDeviceBtns.innerHTML = html
@@ -31,14 +52,20 @@ const showHistory = function (jsonObject) {
 }
 
 const showNewSensorValues = function (jsonObject) {
+  globalThis
+  console.log(jsonObject)
   let htmlTempValue = document.querySelector('.js-temperature')
   let htmlCo2Value = document.querySelector('.js-co2value')
   let htmlHumidity = document.querySelector('.js-humidity')
   let htmlBrightness = document.querySelector('.js-brightness')
   htmlTempValue.innerHTML = jsonObject.temperatuur
+  ChartTemp.updateSeries([[valueToPercent(jsonObject.temperatuur,TempMinValue,TempMaxValue)]])
   htmlCo2Value.innerHTML = jsonObject.eCO2
+  ChartCO2.updateSeries([[valueToPercent(jsonObject.eCO2,CO2MinValue,CO2MaxValue)]])
   htmlHumidity.innerHTML = jsonObject.luchtvochtigheid
+  ChartHum.updateSeries([jsonObject.luchtvochtigheid])
   htmlBrightness.innerHTML = jsonObject.lichtintensiteit
+  ChartBright.updateSeries([[valueToPercent(jsonObject.lichtintensiteit, BrightMinValue, BrightMaxValue)]])
 }
 
 const showTimeline = function (jsonObject) {
@@ -68,6 +95,7 @@ const showError = function () {
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
+
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -90,6 +118,7 @@ const listenToSocket = function () {
     console.log('verbonden met socket webserver');
   });
   socketio.on('B2F_new_sensor_values', function (jsonObject) {
+    console.log(jsonObject)
     showNewSensorValues(jsonObject)
   });
   socketio.on('B2F_new_timeline', function () {
@@ -117,6 +146,341 @@ const listenToUI = function () {
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
+const init_charts = function() {
+  // var optionsTemp = {
+  //   series: [0],
+  //   chart: {
+  //   height: 350,
+  //   type: 'radialBar',
+  //   toolbar: {
+  //     show: false
+  //   }
+  // },
+  // plotOptions: {
+  //   radialBar: {
+  //     startAngle: -90,
+  //     endAngle: 89,
+  //      hollow: {
+  //       margin: 5,
+  //       size: '70%',
+  //       background: '#fff',
+  //       image: undefined,
+  //       imageOffsetX: 0,
+  //       imageOffsetY: 0,
+  //       position: 'front',
+  //       dropShadow: {
+  //         enabled: true,
+  //         top: 3,
+  //         left: 0,
+  //         blur: 4,
+  //         opacity: 0.24
+  //       }
+  //     },
+  //     track: {
+  //       background: '#fff',
+  //       strokeWidth: '67%',
+  //       margin: 0, // margin is in pixels
+  //       dropShadow: {
+  //         enabled: true,
+  //         top: -3,
+  //         left: 0,
+  //         blur: 4,
+  //         opacity: 0.35
+  //       }
+  //     },
+  
+  //     dataLabels: {
+  //       show: true,
+  //       name: {
+  //         offsetY: -50,
+  //         show: true,
+  //         color: '#000  ',
+  //         fontSize: '17px'
+  //       },
+  //       value: {
+  //         formatter: (val) => val/100*range,
+  //         color: '#111',
+  //         fontSize: '36px',
+  //         show: true,
+  //       }
+  //     }
+  //   }
+  // },
+  // fill: {
+  //   type: 'gradient',
+  //   gradient: {
+  //     shade: 'dark',
+  //     type: 'horizontal',
+  //     shadeIntensity: 0.5,
+  //     gradientToColors: ['#ff5f59'],
+  //     inverseColors: false,
+  //     opacityFrom: 1,
+  //     opacityTo: 1,
+  //     stops: [0, 100]
+  //   }
+  // },
+  // stroke: {
+  //   lineCap: 'round'
+  // },
+  // labels: ['°C'],
+  // };
+  var optionsTemp = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            formatter: (val) => val/100*TempRange,
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100]
+      },
+    },
+    labels: ['°C'],
+  }; 
+  var optionsHum = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100]
+      },
+    },
+    labels: ['%'],
+  };
+  var optionsCO2 = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100] 
+      },
+    },
+    labels: ['PPM'],
+  };
+  var optionsBright = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            formatter: (val) => val/100*BrightRange,
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100] 
+      },
+    },
+    labels: ['Lux'],
+  };
+
+  ChartTemp = new ApexCharts(document.querySelector('.js-chart_temp'), optionsTemp);
+  ChartHum = new ApexCharts(document.querySelector('.js-chart_hum'), optionsHum);
+  ChartCO2 = new ApexCharts(document.querySelector('.js-chart_co0'), optionsCO2);
+  ChartBright = new ApexCharts(document.querySelector('.js-chart_bright'), optionsBright);
+  ChartTemp.render();
+  ChartHum.render();
+  ChartCO2.render();
+  ChartBright.render();
+};
+
 const init = function () {
   console.info('DOM geladen');
 
@@ -126,11 +490,13 @@ const init = function () {
   if (htmlDashboard) {
     listenToSocket();
     getTimeline()
+    init_charts()
   }
 
-  if (htmlHistory) {
+  else if (htmlHistory) {
     getDevices()
     getDeviceHistory()
+    socketio.emit('F2B_get_current_readings')
   }
 
   listenToUI();
