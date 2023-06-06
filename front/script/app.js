@@ -229,7 +229,6 @@ const init_charts = function() {
     chart: {
       type: 'radialBar',
       offsetY: -20,
-      width:'100%',
       sparkline: {
         enabled: true
       }
@@ -292,7 +291,6 @@ const init_charts = function() {
     chart: {
       type: 'radialBar',
       offsetY: -20,
-      width:'100%',
       sparkline: {
         enabled: true
       }
@@ -354,7 +352,6 @@ const init_charts = function() {
     chart: {
       type: 'radialBar',
       offsetY: -20,
-      width:'100%',
       sparkline: {
         enabled: true
       }
@@ -416,7 +413,6 @@ const init_charts = function() {
     chart: {
       type: 'radialBar',
       offsetY: -20,
-      width:'100%',
       sparkline: {
         enabled: true
       }
