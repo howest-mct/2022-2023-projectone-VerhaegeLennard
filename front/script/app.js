@@ -1,10 +1,18 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 
-var ChartTemp = NaN
-var minValue = -10;
-var maxValue = 40;
-var range = 50
+// var ChartTemp = NaN
+var TempMinValue = -10;
+var TempMaxValue = 40;
+var TempRange = 50;
+
+var CO2MinValue = 350
+var CO2MaxValue = 20000
+var CO2Range = 19650
+
+var BrightMinValue = 0;
+var BrightMaxValue = 15000;
+var BrightRange = 15000;
 
 const valueToPercent = function (value, maxValue, minValue) {
   var range = Math.abs(maxValue - minValue);
@@ -12,13 +20,6 @@ const valueToPercent = function (value, maxValue, minValue) {
   console.log(percentage)
   return percentage
 } 
-
-// const formatter = (val) => (val * (maxValue - minValue)) / 100 + minValue;
-
-// const valueToPercent = function(value) {
-//   var percentage = ((value - minValue) * 100) / (maxValue - minValue);
-//   return formatter(percentage);
-// };
 
 
 // #region ***  DOM references                           ***********
@@ -52,17 +53,19 @@ const showHistory = function (jsonObject) {
 
 const showNewSensorValues = function (jsonObject) {
   globalThis
+  console.log(jsonObject)
   let htmlTempValue = document.querySelector('.js-temperature')
   let htmlCo2Value = document.querySelector('.js-co2value')
   let htmlHumidity = document.querySelector('.js-humidity')
   let htmlBrightness = document.querySelector('.js-brightness')
   htmlTempValue.innerHTML = jsonObject.temperatuur
-  minValue = -10
-  maxValue = 40
-  ChartTemp.updateSeries([[valueToPercent(jsonObject.temperatuur,minValue,maxValue)]])
+  ChartTemp.updateSeries([[valueToPercent(jsonObject.temperatuur,TempMinValue,TempMaxValue)]])
   htmlCo2Value.innerHTML = jsonObject.eCO2
+  ChartCO2.updateSeries([[valueToPercent(jsonObject.eCO2,CO2MinValue,CO2MaxValue)]])
   htmlHumidity.innerHTML = jsonObject.luchtvochtigheid
+  ChartHum.updateSeries([jsonObject.luchtvochtigheid])
   htmlBrightness.innerHTML = jsonObject.lichtintensiteit
+  ChartBright.updateSeries([[valueToPercent(jsonObject.lichtintensiteit, BrightMinValue, BrightMaxValue)]])
 }
 
 const showTimeline = function (jsonObject) {
@@ -255,7 +258,7 @@ const init_charts = function() {
             fontSize: '17px'
           },
           value: {
-            formatter: (val) => val/100*range,
+            formatter: (val) => val/100*TempRange,
             offsetY: -2,
             fontSize: '22px',
             show: true
@@ -317,7 +320,6 @@ const init_charts = function() {
             fontSize: '17px'
           },
           value: {
-            formatter: (val) => val/100*range,
             offsetY: -2,
             fontSize: '22px',
             show: true
@@ -345,11 +347,138 @@ const init_charts = function() {
     },
     labels: ['%'],
   };
+  var optionsCO2 = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100] 
+      },
+    },
+    labels: ['PPM'],
+  };
+  var optionsBright = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            formatter: (val) => val/100*BrightRange,
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100] 
+      },
+    },
+    labels: ['Lux'],
+  };
 
   ChartTemp = new ApexCharts(document.querySelector('.js-chart_temp'), optionsTemp);
-  ChartHum = new ApexCharts(document.querySelector('.js-chart_temp'), optionsTemp);
+  ChartHum = new ApexCharts(document.querySelector('.js-chart_hum'), optionsHum);
+  ChartCO2 = new ApexCharts(document.querySelector('.js-chart_co0'), optionsCO2);
+  ChartBright = new ApexCharts(document.querySelector('.js-chart_bright'), optionsBright);
   ChartTemp.render();
-  ChartTemp.render();
+  ChartHum.render();
+  ChartCO2.render();
+  ChartBright.render();
 };
 
 const init = function () {
