@@ -4,9 +4,11 @@ const socketio = io(lanIP);
 var ChartTemp = NaN
 var minValue = -10;
 var maxValue = 40;
+var range = 50
 
 const valueToPercent = function (value, maxValue, minValue) {
-  var percentage = ((value - minValue) * 100 ) / (maxValue - minValue)
+  var range = Math.abs(maxValue - minValue);
+  var percentage = value/range*100
   console.log(percentage)
   return percentage
 } 
@@ -142,85 +144,211 @@ const listenToUI = function () {
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const init_charts = function() {
+  // var optionsTemp = {
+  //   series: [0],
+  //   chart: {
+  //   height: 350,
+  //   type: 'radialBar',
+  //   toolbar: {
+  //     show: false
+  //   }
+  // },
+  // plotOptions: {
+  //   radialBar: {
+  //     startAngle: -90,
+  //     endAngle: 89,
+  //      hollow: {
+  //       margin: 5,
+  //       size: '70%',
+  //       background: '#fff',
+  //       image: undefined,
+  //       imageOffsetX: 0,
+  //       imageOffsetY: 0,
+  //       position: 'front',
+  //       dropShadow: {
+  //         enabled: true,
+  //         top: 3,
+  //         left: 0,
+  //         blur: 4,
+  //         opacity: 0.24
+  //       }
+  //     },
+  //     track: {
+  //       background: '#fff',
+  //       strokeWidth: '67%',
+  //       margin: 0, // margin is in pixels
+  //       dropShadow: {
+  //         enabled: true,
+  //         top: -3,
+  //         left: 0,
+  //         blur: 4,
+  //         opacity: 0.35
+  //       }
+  //     },
+  
+  //     dataLabels: {
+  //       show: true,
+  //       name: {
+  //         offsetY: -50,
+  //         show: true,
+  //         color: '#000  ',
+  //         fontSize: '17px'
+  //       },
+  //       value: {
+  //         formatter: (val) => val/100*range,
+  //         color: '#111',
+  //         fontSize: '36px',
+  //         show: true,
+  //       }
+  //     }
+  //   }
+  // },
+  // fill: {
+  //   type: 'gradient',
+  //   gradient: {
+  //     shade: 'dark',
+  //     type: 'horizontal',
+  //     shadeIntensity: 0.5,
+  //     gradientToColors: ['#ff5f59'],
+  //     inverseColors: false,
+  //     opacityFrom: 1,
+  //     opacityTo: 1,
+  //     stops: [0, 100]
+  //   }
+  // },
+  // stroke: {
+  //   lineCap: 'round'
+  // },
+  // labels: ['°C'],
+  // };
   var optionsTemp = {
     series: [0],
     chart: {
-    height: 350,
-    type: 'radialBar',
-    toolbar: {
-      show: true
-    }
-  },
-  plotOptions: {
-    radialBar: {
-      startAngle: -135,
-      endAngle: 225,
-       hollow: {
-        margin: 0,
-        size: '70%',
-        background: '#fff',
-        image: undefined,
-        imageOffsetX: 0,
-        imageOffsetY: 0,
-        position: 'front',
-        dropShadow: {
-          enabled: true,
-          top: 3,
-          left: 0,
-          blur: 4,
-          opacity: 0.24
-        }
-      },
-      track: {
-        background: '#fff',
-        strokeWidth: '67%',
-        margin: 0, // margin is in pixels
-        dropShadow: {
-          enabled: true,
-          top: -3,
-          left: 0,
-          blur: 4,
-          opacity: 0.35
-        }
-      },
-  
-      dataLabels: {
-        show: true,
-        name: {
-          offsetY: -10,
-          show: true,
-          color: '#888',
-          fontSize: '17px'
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
         },
-        value: {
-          formatter: (val) => ( val * (maxValue - Math.abs(minValue)) ) / 100 + Math.abs(minValue),
-          color: '#111',
-          fontSize: '36px',
-          show: true,
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            formatter: (val) => val/100*range,
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
         }
       }
-    }
-  },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shade: 'dark',
-      type: 'horizontal',
-      shadeIntensity: 0.5,
-      gradientToColors: ['#ABE5A1'],
-      inverseColors: true,
-      opacityFrom: 1,
-      opacityTo: 1,
-      stops: [0, 100]
-    }
-  },
-  stroke: {
-    lineCap: 'round'
-  },
-  labels: ['°C'],
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100]
+      },
+    },
+    labels: ['°C'],
+  }; 
+  var optionsHum = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      offsetY: -20,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -90,
+        endAngle: 90,
+        track: {
+          background: "#e7e7e7",
+          strokeWidth: '97%',
+          margin: 5,
+          dropShadow: {
+            enabled: true,
+            top: 2,
+            left: 0,
+            color: '#999',
+            opacity: 1,
+            blur: 2
+          }
+        },
+        dataLabels: {
+          name: {
+            offsetY: -10,
+            show: true,
+            color: '#000',
+            fontSize: '17px'
+          },
+          value: {
+            formatter: (val) => val/100*range,
+            offsetY: -2,
+            fontSize: '22px',
+            show: true
+          }
+        }
+      }
+    },
+    grid: {
+      padding: {
+        top: -10
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#ff0000'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.7,
+        stops: [0, 100]
+      },
+    },
+    labels: ['%'],
   };
 
   ChartTemp = new ApexCharts(document.querySelector('.js-chart_temp'), optionsTemp);
+  ChartHum = new ApexCharts(document.querySelector('.js-chart_temp'), optionsTemp);
+  ChartTemp.render();
   ChartTemp.render();
 };
 
