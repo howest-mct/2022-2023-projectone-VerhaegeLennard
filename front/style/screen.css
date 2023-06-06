@@ -657,8 +657,7 @@ a:active {
 }
 
 .c-card__body {
-  padding: 1.7142857143rem 1.7142857143rem 0;
-  display: flow-root;
+  padding: 1.7142857143rem 1.7142857143rem;
 }
 .c-card__body + .c-card__body {
   border-top: 1px solid #e9ecef;
@@ -713,6 +712,7 @@ a:active {
   flex-direction: column;
   gap: 1.7142857143rem;
   position: relative;
+  margin-bottom: 0;
 }
 .c-timeline::before {
   content: "";
@@ -759,6 +759,47 @@ a:active {
 
 .c-timeline__action {
   margin-bottom: 0;
+}
+
+.c-sensoren {
+  width: 100%;
+  flex-wrap: nowrap;
+}
+@media (max-width: 62.0625em) {
+  .c-sensoren {
+    flex-wrap: wrap;
+  }
+}
+.c-sensoren__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.c-sensor {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.c-sensor__graph {
+  width: 100%;
+}
+
+.c-aside {
+  width: calc(33.3333333333% - 1.7142857143rem);
+}
+@media (max-width: 62.0625em) {
+  .c-aside {
+    width: 100%;
+  }
+}
+
+.c-sensoren-card {
+  width: calc(66.6666666667% - 1.7142857143rem);
+}
+@media (max-width: 62.0625em) {
+  .c-sensoren-card {
+    width: 100%;
+  }
 }
 
 /*
