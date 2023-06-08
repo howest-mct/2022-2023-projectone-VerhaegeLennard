@@ -97,9 +97,11 @@ const showConfig = function (jsonObject) {
   modusDeur = jsonObject.Modus
   if (modusDeur == 1) {
     htmlDoorModus.innerHTML = `Door controlled by user timer`
+    showConfigDoorTime(jsonObject.OpenTijd, jsonObject.SluitTijd)
   }
   if (modusDeur == 0) {
     htmlDoorModus.innerHTML = `Door controlled automaticaly`
+    hideConfigDoorTime()
   }
 }
 
@@ -112,9 +114,18 @@ const showTimeForm = function () {
   <input type="time" id="time2" name="time2"><br>`
 }
 
-const removeTimeForm = function () {
+const hideTimeForm = function () {
   console.log('remove form')
   document.querySelector('.js-time_selection').innerHTML = ``
+}
+
+const showConfigDoorTime = function (opentijd, sluittijd) {
+  document.querySelector('.js-dash-door-time').innerHTML = `<div>Opening - ${opentijd}</div>
+  <div>Closing - ${sluittijd}</div>`
+}
+
+const hideConfigDoorTime = function () {
+  document.querySelector('.js-dash-door-time').innerHTML = `Automatic door controll`
 }
 
 const showError = function () {
@@ -197,7 +208,7 @@ const listenToUI = function () {
         showTimeForm()
       }
       if (radiobutton.getAttribute('data-mode') == 'auto') {
-        removeTimeForm()
+        hideTimeForm()
       }
     })
   // const editBtn = document.querySelector('.js-btnedit')
