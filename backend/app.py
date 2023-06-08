@@ -191,8 +191,8 @@ def get_timeline_history():
     data = DataRepository.read_history_timeline()
     return jsonify(data), 200
 
-@app.route(ENDPOINT + '/config/', methods=['GET'])
-def get_config():
+@app.route(ENDPOINT + '/config/<user_id>/', methods=['GET'])
+def get_config(user_id):
     data = DataRepository.read_config(user_id)
     return jsonify(data), 200
 

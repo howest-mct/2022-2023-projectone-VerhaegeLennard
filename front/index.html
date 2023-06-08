@@ -69,14 +69,19 @@
                 <div class="o-layout o-layout--justify-space-between">
                     <aside class="c-aside ">
                         <div class="c-card">
-                            <div class="c-card__body">
-                                <h2>
-                                    Configuration
-                                </h2>
-                                <div class="c-tee js-door-setting">Door on timer:</div>
-                                <div>
-                                    <div class="js-door-opening">Opening -</div> 
-                                    <div class="js-door-closing">Closing -</div>
+                            <div class="c-card__body o-container">
+                                <div class="o-layout o-layout--justify-space-between">
+                                    <div>
+                                        <h2>
+                                            Configuration
+                                        </h2>
+                                        <div class="js-door-setting u-mb-clear">Door on timer:</div>
+                                        <div>
+                                            <div class="js-door-opening">Opening -</div>
+                                            <div class="js-door-closing">Closing -</div>
+                                        </div>
+                                    </div>
+                                    <div><a class="o-button-reset c-button c-button--meta js-toggle-configuration">Edit</a></div>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +188,7 @@
                                                 <div id="chart-co2" class="c-chart js-chart_co0"></div>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
                                     <div class="o-layout__item u-1-of-2-bp1 o-apex-chart">
                                         <h3 class="u-mb-clear">
@@ -206,7 +211,7 @@
                                                 <div id="chart-bright" class="c-chart js-chart_bright"></div>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
                                 </div>
                             </div>
@@ -250,14 +255,45 @@
             </nav>
         </div>
     </div>
-    <script>
-        // toggle a class on the body to show/hide the mobile menu when every js-toggle-menu is clicked
-        document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
-            el.addEventListener('click', function () {
-                document.body.classList.toggle('has-mobile-nav');
-            });
-        });
-    </script>
+    <div class="c-popup">
+        <!-- <div class="c-popup__overlay"></div> -->
+        <div class="c-popup__body">
+            <div class="o-container">
+                <div class="o-layout o-layout--justify-space-between">
+                    <div class="c-card">
+                        <div class="c-card__body o-container">
+                            <div class="o-layout o-layout--justify-space-between">
+                                <h2 class="u-mb-clear">Change Configuration</h2>
+                                <button class="o-button-reset c-icon-button js-toggle-configuration">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+                                        <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="c-card__body">
+                            <form action="#" method="post">
+                                <h2 class="u-mb-clear">Select your mode:</h2>
+                                <input type="radio" name="TimeMode" id="radioBtn1" value="Manual">
+                                <label class="js-time_mode_selection" data-mode="manual" for="radioBtn1">Manual time selection</label><br>
+                                <input type="radio" name="TimeMode" id="radioBtn2" value="Auto">
+                                <label class="js-time_mode_selection" data-mode="auto" for="radioBtn2">Automatic time selection</label><br>
+                            
+                                <div class="js-time_selection">
+                                </div>
+
+                                <h2 class="u-mb-clear">Select a feeding moment:</h2>
+                                <label for="time2">Feeding</label>
+                                <input type="time" id="time2" name="time2"><br>
+                            
+                                <input type="submit" value="Submit">
+                              </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -41,29 +41,64 @@
       <img class="c-header__user" src="img/avatar.jpg" alt="Avatar of the user">
     </div>
   </header>
-  <div class="o-row o-row--l">
-    <div class="o-container">
-      <div class="o-layout o-layout--gutter">
-        <div class="o-layout__item">
-          <div class="c-card">
-            <div class="c-card__body">
-            <h2>Available devices:</h2>
+  <main class="c-main">
+    <div class="o-row o-row--l">
+      <div class="o-container">
+        <div class="o-layout o-layout--gutter">
+          <div class="o-layout__item">
+            <div class="c-card">
+              <div class="c-card__body">
+                <h2>Available devices:</h2>
+              </div>
+              <div class="c-card__body">
+                <div class="js-devicebtns"></div>
+              </div>
             </div>
-            <div class="c-card__body">
-            <div class="js-devicebtns"></div>
           </div>
-          </div>
-        </div>
-        <div class="o-layout__item">
-          <div class="c-card">
-            <div class="c-card__body">
-              <div class="js-history__list">
-                History:
+          <div class="o-layout__item">
+            <div class="c-card">
+              <div class="c-card__body">
+                <div class="js-history__list">
+                  History:
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </main>
+  <div class="c-mobile-nav">
+    <div class="c-mobile-nav__overlay"></div>
+    <div class="c-mobile-nav__body">
+      <nav class="c-nav c-nav--mobile">
+        <header class="c-nav__header">
+          <h2 class="c-nav__title">
+            Navigation
+          </h2>
+          <button class="o-button-reset c-icon-button js-toggle-menu">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+              <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </button>
+        </header>
+        <ul class="o-list-reset c-nav__list">
+          <li class="c-nav__item c-nav__item--active">
+            <a class="c-nav__link" href="index.html">Dashboards</a>
+          </li>
+          <!-- niet goed -->
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#!">Jobs</a>
+          </li>
+          <!-- wel goed -->
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#!">Applicants</a>
+          </li>
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#!">Company</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </body>

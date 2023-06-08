@@ -14,6 +14,8 @@ var BrightMinValue = 0;
 var BrightMaxValue = 15000;
 var BrightRange = 15000;
 
+const userId = 1
+
 const valueToPercent = function (value, maxValue, minValue) {
   var range = Math.abs(maxValue - minValue);
   var percentage = value/range*100
@@ -89,13 +91,54 @@ const showTimeline = function (jsonObject) {
 htmlTimeline.innerHTML = html
 }
 
+const showConfig = function (jsonObject) {
+  console.log(jsonObject)
+  htmlDoorModus = document.querySelector('.js-door-setting')
+  modusDeur = jsonObject.Modus
+  if (modusDeur == 1) {
+    htmlDoorModus.innerHTML = `Door controlled by user timer`
+  }
+  if (modusDeur == 0) {
+    htmlDoorModus.innerHTML = `Door controlled automaticaly`
+  }
+}
+
+const showTimeForm = function () {
+  console.log('toon form')
+  document.querySelector('.js-time_selection').innerHTML = `<h2 class="u-mb-clear">Time Selection</h2>
+  <label for="time1">Opening:</label>
+  <input type="time" id="time1" name="time1"><br>
+  <label for="time2">Closing</label>
+  <input type="time" id="time2" name="time2"><br>`
+}
+
+const removeTimeForm = function () {
+  console.log('remove form')
+  document.querySelector('.js-time_selection').innerHTML = ``
+}
+
 const showError = function () {
   console.error(error);
 };
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
+const addConfigPopup = function () {
+  document.querySelectorAll('.js-toggle-configuration').forEach(function (el) {
+    el.addEventListener('click', function () {
+        console.log('')
+        document.body.classList.toggle('has-popup');
+    });
+});
+}
 
+const addMobileMenu = function () {
+  document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
+    el.addEventListener('click', function () {
+        document.body.classList.toggle('has-mobile-nav');
+    });
+});
+}
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -109,6 +152,10 @@ const getDeviceHistory = function(id) {
 
 const getTimeline = function() {
   handleData(`http://192.168.168.169:5000/api/v1/timeline/`, showTimeline, showError)
+}
+
+const getUserConfig = function(id) {
+  handleData(`http://192.168.168.169:5000/api/v1/config/${id}/`, showConfig, showError)
 }
 // #endregion
 
@@ -142,7 +189,23 @@ const listenToUI = function () {
       console.log('Button ID: ',btn.getAttribute('data-id'));
       socketio.emit('F2B_toggle_motor',{buttonId:btn.getAttribute('data-id')})
     })
+
+  const radiobuttonsTimeMode = document.querySelectorAll('.js-time_mode_selection')
+  for (const radiobutton of radiobuttonsTimeMode)
+    radiobutton.addEventListener('click', function () {
+      if (radiobutton.getAttribute('data-mode') == 'manual') {
+        showTimeForm()
+      }
+      if (radiobutton.getAttribute('data-mode') == 'auto') {
+        removeTimeForm()
+      }
+    })
+  // const editBtn = document.querySelector('.js-btnedit')
+  // editBtn.addEventListener('click', function () {
+  //   showConfigPopup()
+  // })
 };
+
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
@@ -489,8 +552,10 @@ const init = function () {
 
   if (htmlDashboard) {
     listenToSocket();
+    getUserConfig(userId)
     getTimeline()
     init_charts()
+    addConfigPopup()
   }
 
   else if (htmlHistory) {
@@ -500,6 +565,8 @@ const init = function () {
   }
 
   listenToUI();
+  addMobileMenu()
+  
 };
 
 document.addEventListener('DOMContentLoaded', init);

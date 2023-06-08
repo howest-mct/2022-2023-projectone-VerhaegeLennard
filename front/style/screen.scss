@@ -995,6 +995,47 @@ a:active {
   }
 }
 
+.c-popup__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.c-popup__body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  max-width: 40rem;
+
+  @include mq(bp1, max) {
+    width: 90%;
+  }
+}
+
+.has-popup {
+  overflow: hidden;
+
+  .c-popup {
+    pointer-events: auto;
+  }
+  
+  .c-popup__overlay{
+    pointer-events: none;
+  }
+
+  .c-popup__body {
+    // opacity: 1;
+    translate: 0 0;
+  }
+}
+
 /*---------------------------------------/*
  # UTILITIES
 /*---------------------------------------*/
