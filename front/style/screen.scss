@@ -787,8 +787,8 @@ a:active {
 }
 
 .c-card__body {
-  padding: $space-m $space-m 0;
-  display: flow-root;
+  padding: $space-m $space-m;
+
 
   & + & {
     border-top: 1px solid $color-border-light;
@@ -847,7 +847,7 @@ a:active {
   flex-direction: column;
   gap: $space-m;
   position: relative;
-
+  margin-bottom: 0;
   &::before {
     content: "";
     width: 2px;
@@ -895,6 +895,37 @@ a:active {
 
 .c-timeline__action {
   margin-bottom: 0;
+}
+.c-sensoren{
+  width: 100%;
+  flex-wrap: nowrap;
+  @include mq(bp3,'max'){
+    flex-wrap: wrap;
+  }
+  &__column{
+    display: flex;
+    flex-direction: column;
+  }
+}
+.c-sensor{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  &__graph{
+    width: 100%;
+  }
+}
+.c-aside {
+  width: calc((100% / 3 * 1) - $space-m);
+  @include mq(bp3,'max'){
+    width: 100%;
+  }
+}
+.c-sensoren-card {
+  width: calc((100% / 3 * 2) - $space-m);
+  @include mq(bp3,'max'){
+    width: 100%;
+  }
 }
 
 /*

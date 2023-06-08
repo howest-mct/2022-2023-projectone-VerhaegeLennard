@@ -42,7 +42,7 @@
             <img class="c-header__user" src="img/avatar.jpg" alt="Avatar of the user">
         </div>
     </header>
-    <main class="c-main">
+    <main class="c-main o-row">
         <section class="o-row o-row--l">
             <div class="o-container">
                 <div class="o-layout o-layout--gutter o-layout--justify-space-between o-layout--align-center">
@@ -66,8 +66,8 @@
         </section>
         <div class="o-row o-row--l u-pt-clear">
             <div class="o-container">
-                <div class="o-layout o-layout--gutter">
-                    <aside class="o-layout__item u-1-of-3-bp3">
+                <div class="o-layout o-layout--justify-space-between">
+                    <aside class="c-aside ">
                         <div class="c-card">
                             <div class="c-card__body">
                                 <h2>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                     </aside>
-                    <section class="o-layout__item u-2-of-3-bp3">
+                    <section class="c-sensoren-card">
                         <div class="c-card">
                             <div class="c-card__body">
                                 <div class="o-layout o-layout--justify-space-between o-layout--align-top">
@@ -180,15 +180,18 @@
                                         <div>
                                             <div id="chart-temp" class="c-chart js-chart_temp"></div>
                                         </div>
-                                        <h3 class="u-mb-clear">
-                                            C02 value
-                                        </h3>
-                                        <p class="js-co2value">
-                                            xxx
-                                        </p>
-                                        <div>
-                                            <div id="chart-co2" class="c-chart js-chart_co0"></div>
+                                        <div class="c-sensor o-layout__item">
+                                            <h3 class="u-mb-clear">
+                                                C02 value
+                                            </h3>
+                                            <p class="js-co2value">
+                                                xxx
+                                            </p>
+                                            <div>
+                                                <div id="chart-co2" class="c-chart js-chart_co0"></div>
+                                            </div>
                                         </div>
+                                    
                                     </div>
                                     <div class="o-layout__item u-1-of-2-bp1 o-apex-chart">
                                         <h3 class="u-mb-clear">
@@ -200,15 +203,18 @@
                                         <div>
                                             <div id="chart-hum" class="c-chart js-chart_hum"></div>
                                         </div>
-                                        <h3 class="u-mb-clear">
-                                            Brightness
-                                        </h3>
-                                        <p class="js-brightness">
-                                            xxx
-                                        </p>
-                                        <div>
-                                            <div id="chart-bright" class="c-chart js-chart_bright"></div>
+                                        <div class="c-sensor o-layout__item">
+                                            <h3 class="u-mb-clear">
+                                                Brightness
+                                            </h3>
+                                            <p class="js-brightness">
+                                                xxx
+                                            </p>
+                                            <div>
+                                                <div id="chart-bright" class="c-chart js-chart_bright"></div>
+                                            </div>
                                         </div>
+                                    
                                     </div>
                                 </div>
                             </div>
