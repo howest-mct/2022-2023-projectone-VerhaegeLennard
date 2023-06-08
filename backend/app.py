@@ -191,6 +191,11 @@ def get_timeline_history():
     data = DataRepository.read_history_timeline()
     return jsonify(data), 200
 
+@app.route(ENDPOINT + '/config/', methods=['GET'])
+def get_config():
+    data = DataRepository.read_config(user_id)
+    return jsonify(data), 200
+
 # SOCKET IO
 @socketio.on('connect')
 def initial_connection():

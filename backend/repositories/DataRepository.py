@@ -43,4 +43,10 @@ class DataRepository:
     def read_history_timeline():
         sql = "SELECT * from historiek WHERE DeviceId in (4,5) ORDER BY volgnummer desc LIMIT 4"
         return Database.get_rows(sql)
+    
+    @staticmethod
+    def read_config(user_id):
+        sql = "SELECT * from gebruiker WHERE GebruikerId = %s"
+        params = [user_id]
+        return Database.get_one_row(sql, params)
 
