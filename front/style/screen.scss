@@ -39,15 +39,15 @@ $color-text: $oc-gray-9;
 $color-text-light: $oc-gray-7;
 $color-text-lighter: $oc-gray-6;
 
-$color-primary: $oc-indigo-6;
-$color-primary-light: $oc-indigo-5;
-$color-primary-lighter: $oc-indigo-4;
-$color-primary-lightest: $oc-indigo-1;
-$color-primary-dark: $oc-indigo-7;
+$color-primary: $oc-red-5;
+$color-primary-light: $oc-red-4;
+$color-primary-lighter: $oc-red-3;
+$color-primary-lightest: $oc-red-0;
+$color-primary-dark: $oc-red-6;
 
-$color-border: $oc-gray-3;
-$color-border-light: $oc-gray-2;
-$color-border-dark: $oc-gray-4;
+$color-border: $oc-red-5;
+$color-border-light: $oc-red-4;
+$color-border-dark: $oc-red-6;
 
 $color-succes: $oc-green-5;
 $color-succes-light: $oc-green-4;
@@ -184,6 +184,10 @@ img {
   max-width: 100%; // make images responsive
 }
 
+svg {
+  fill: currentColor;
+}
+
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -233,8 +237,8 @@ h4,
 h5,
 h6,
 strong {
-  color: $color-text;
-  font-weight: 600;
+  color: currentColor;
+  font-weight: 700;
 }
 
 h1 {
@@ -564,6 +568,12 @@ a:active {
   The icon button component is used to display a button with an icon
 */
 
+.c-icon {
+  svg {
+    fill: currentColor;
+  }
+}
+
 .c-icon-button {
   display: flex;
   align-items: center;
@@ -679,13 +689,13 @@ a:active {
 .c-nav__link:any-link {
   display: block;
   font-weight: 600;
-  color: $oc-indigo-1;
+  color: $oc-white;
   text-decoration: none;
   border-radius: $radius-m;
 
   .c-nav__item--active & {
     color: $oc-indigo-0;
-    background-color: $oc-indigo-9;
+    background-color: $oc-red-5;
     // padding: $space-xxs $space-xs;
     padding: $space-xxs $space-s;
   }
@@ -736,23 +746,24 @@ a:active {
   font-weight: 600;
   text-decoration: none;
   color: $oc-indigo-0;
-  background-color: $color-primary-dark;
-  border: 1px solid $color-primary-dark;
+  background-color: $oc-red-5;
+  border: 1px solid $oc-red-6;
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: $color-primary;
+    background-color: $oc-red-6;
   }
 }
 
 .c-button--meta,
 .c-button--meta:any-link {
-  color: $color-text-light;
-  background-color: white;
-  border-color: $color-border-dark;
+  color: $oc-red-5;
+  background-color: $color-primary-lightest;
+  border-color: $color-border-light;
 
   &:hover {
-    background-color: $oc-gray-0;
+    background-color: $oc-red-4;
+    color: $oc-red-0;
   }
 }
 
@@ -879,16 +890,17 @@ a:active {
   width: calc($baseline * 6);
   aspect-ratio: 1/1;
   border-radius: 100%;
-  background-color: $oc-gray-1;
+  background-color: $oc-red-0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $color-text-light;
-  border: 2px solid white;
+  color: $oc-red-5;
+  border: 2px solid white; 
 
   svg {
     fill: currentColor;
+    width: 80%;
   }
 }
 

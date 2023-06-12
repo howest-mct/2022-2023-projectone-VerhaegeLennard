@@ -57,8 +57,18 @@
                     </div>
                     <div class="o-layout__item u-flex-basis-auto">
                         <p class="c-button-group">
-                            <button type="button" class="o-button-reset c-button js-button" data-id="feeder">Toggle feeding</button>
-                            <button type="button" class="o-button-reset c-button js-button" data-id="door">Toggle Door</button>
+                            <button type="button" class="o-button-reset c-button js-button c-icon" data-id="feeder">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                                    <path d="M285-80v-368q-52-11-88.5-52.5T160-600v-280h60v280h65v-280h60v280h65v-280h60v280q0 58-36.5 99.5T345-448v368h-60Zm415 0v-320H585v-305q0-79 48-127t127-48v800h-60Z" />
+                                </svg>
+                                <p class="u-mb-clear">Feed chickens</p>
+                            </button>
+
+                            <button type="button" class="o-button-reset c-button js-button js-door-button c-icon" data-id="door"><svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                                    <path d="M220-80q-24.75 0-42.375-17.625T160-140v-434q0-24.75 17.625-42.375T220-634h70v-96q0-78.85 55.606-134.425Q401.212-920 480.106-920T614.5-864.425Q670-808.85 670-730v96h70q24.75 0 42.375 17.625T800-574v434q0 24.75-17.625 42.375T740-80H220Zm0-60h520v-434H220v434Zm260.168-140Q512-280 534.5-302.031T557-355q0-30-22.668-54.5t-54.5-24.5Q448-434 425.5-409.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM350-634h260v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426-860 388-822.083 350-784.167 350-730v96ZM220-140v-434 434Z" />
+                                </svg>
+                                <p class="u-mb-clear">Press to open door</p>
+                            </button>
                         </p>
                     </div>
                 </div>
@@ -156,7 +166,7 @@
                                         <h2 class="u-mb-clear">
                                             Sensor Information
                                         </h2>
-                                        <p class="u-color-text-lighter">
+                                        <p class="u-color-text-lighter u-mb-clear">
                                             Current or most recent readings
                                         </p>
                                     </div>
@@ -273,20 +283,20 @@
                             <div class="js-config-form">
                                 <h2 class="u-mb-clear">Select your mode:</h2>
 
-                                <input type="radio" name="TimeMode" id="radioBtn1" value="Manual">
-                                <label class="js-time_mode_selection" data-mode="manual" for="radioBtn1">Manual time selection</label><br>
-                                
-                                <input type="radio" name="TimeMode" id="radioBtn2" value="Auto">
-                                <label class="js-time_mode_selection" data-mode="auto" for="radioBtn2">Automatic time selection</label><br>
+                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-mode="manual">
+                                <label for="radioBtn1">Manual time selection</label><br>
+
+                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-mode="auto">
+                                <label for="radioBtn2">Automatic time selection</label><br>
 
                                 <div class="js-time_selection">
                                 </div>
 
                                 <h2 class="u-mb-clear">Select a feeding moment:</h2>
                                 <label for="time2">Feeding</label>
-                                <input type="time" id="time2" name="time2"><br>
+                                <input class="js-feedingtime-form" type="time" id="time2" name="time2"><br>
 
-                                <input type="submit" value="Submit">
+                                <input class="js-submit-config" type="submit" value="Submit">
                             </div>
                         </div>
                     </div>
