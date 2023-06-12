@@ -32,7 +32,7 @@ const showDevices = function (jsonObject) {
   let htmlDeviceBtns = document.querySelector('.js-devicebtns')
   let html = ""
   for (let device of jsonObject) {
-    if (device.DeviceId in (6,7,8,9,10)){
+    if ([6, 7, 8, 9, 10].includes(device.DeviceId)){
       html += `<button type="button" class="o-button-reset c-button c-button--meta js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
     }
   }
@@ -61,13 +61,13 @@ const showNewSensorValues = function (jsonObject) {
   let htmlCo2Value = document.querySelector('.js-co2value')
   let htmlHumidity = document.querySelector('.js-humidity')
   let htmlBrightness = document.querySelector('.js-brightness')
-  htmlTempValue.innerHTML = jsonObject.temperatuur
+  htmlTempValue.innerHTML = Math.round((jsonObject.temperatuur + Number.EPSILON) * 100) / 100
   ChartTemp.updateSeries([[valueToPercent(jsonObject.temperatuur, TempMinValue, TempMaxValue)]])
-  htmlCo2Value.innerHTML = jsonObject.eCO2
+  htmlCo2Value.innerHTML = Math.round((jsonObject.eCO2 + Number.EPSILON) * 100) / 100
   ChartCO2.updateSeries([[valueToPercent(jsonObject.eCO2, CO2MinValue, CO2MaxValue)]])
-  htmlHumidity.innerHTML = jsonObject.luchtvochtigheid
+  htmlHumidity.innerHTML = Math.round((jsonObject.luchtvochtigheid + Number.EPSILON) * 100) / 100
   ChartHum.updateSeries([jsonObject.luchtvochtigheid])
-  htmlBrightness.innerHTML = jsonObject.lichtintensiteit
+  htmlBrightness.innerHTML = Math.round((jsonObject.lichtintensiteit + Number.EPSILON) * 100) / 100
   ChartBright.updateSeries([[valueToPercent(jsonObject.lichtintensiteit, BrightMinValue, BrightMaxValue)]])
 }
 
@@ -273,7 +273,7 @@ const listenToTimeSelection = function () {
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
-const init_charts = function () {
+const init_charts_dash = function () {
   // var optionsTemp = {
   //   series: [0],
   //   chart: {
@@ -618,7 +618,7 @@ const init = function () {
     listenToSocket();
     getUserConfig(userId)
     getTimeline()
-    init_charts()
+    init_charts_dash()
     addConfigPopup()
   }
 

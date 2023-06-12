@@ -650,6 +650,17 @@ a:active {
   position: relative;
 }
 
+.c-chart {
+  position: relative;
+
+  &__value {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 /*
   Components: Nav
   ---
