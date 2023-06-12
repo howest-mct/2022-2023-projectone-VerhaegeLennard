@@ -203,6 +203,15 @@ html {
   background-color: $oc-gray-0;
 }
 
+.c-popup {
+  display: none;
+}
+
+body.has-popup .c-popup {
+  display: block;
+}
+
+
 /*
     Customize the background color and color to match your design.
 */

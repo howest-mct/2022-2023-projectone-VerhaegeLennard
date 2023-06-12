@@ -2,7 +2,7 @@ import threading
 import time
 import datetime
 from repositories.DataRepository import DataRepository
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from RPi import GPIO
@@ -175,7 +175,6 @@ def start_thread():
 def hallo():
     return "Server is running, er zijn momenteel geen API endpoints beschikbaar."
 
-
 @app.route(ENDPOINT + '/devices/', methods=['GET'])
 def get_devices():
     data = DataRepository.read_all_devices()
@@ -195,6 +194,20 @@ def get_timeline_history():
 def get_config(user_id):
     data = DataRepository.read_config(user_id)
     return jsonify(data), 200
+
+@app.route(ENDPOINT + '/configform/', methods=['POST'])
+def submit_config():
+    # name = request.form.get('name')
+    # email = request.form.get('email')
+    # message = request.form.get('message')
+
+    # Perform validation and processing of the form data
+    # ...
+
+    # Return a response or redirect to another page
+    # ...
+
+    return jsonify(success=True)
 
 # SOCKET IO
 @socketio.on('connect')

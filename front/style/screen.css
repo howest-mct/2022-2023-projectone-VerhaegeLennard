@@ -66,6 +66,14 @@ html {
   background-color: #f8f9fa;
 }
 
+.c-popup {
+  display: none;
+}
+
+body.has-popup .c-popup {
+  display: block;
+}
+
 /*
     Customize the background color and color to match your design.
 */
