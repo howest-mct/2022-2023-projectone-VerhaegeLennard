@@ -57,8 +57,18 @@
                     </div>
                     <div class="o-layout__item u-flex-basis-auto">
                         <p class="c-button-group">
-                            <button type="button" class="o-button-reset c-button js-button" data-id="feeder">Toggle feeding</button>
-                            <button type="button" class="o-button-reset c-button js-button" data-id="door">Toggle Door</button>
+                            <button type="button" class="o-button-reset c-button js-button c-icon" data-id="feeder">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                                    <path d="M285-80v-368q-52-11-88.5-52.5T160-600v-280h60v280h65v-280h60v280h65v-280h60v280q0 58-36.5 99.5T345-448v368h-60Zm415 0v-320H585v-305q0-79 48-127t127-48v800h-60Z" />
+                                </svg>
+                                <p class="u-mb-clear">Feed chickens</p>
+                            </button>
+
+                            <button type="button" class="o-button-reset c-button js-button js-door-button c-icon" data-id="door"><svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                                    <path d="M220-80q-24.75 0-42.375-17.625T160-140v-434q0-24.75 17.625-42.375T220-634h70v-96q0-78.85 55.606-134.425Q401.212-920 480.106-920T614.5-864.425Q670-808.85 670-730v96h70q24.75 0 42.375 17.625T800-574v434q0 24.75-17.625 42.375T740-80H220Zm0-60h520v-434H220v434Zm260.168-140Q512-280 534.5-302.031T557-355q0-30-22.668-54.5t-54.5-24.5Q448-434 425.5-409.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM350-634h260v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426-860 388-822.083 350-784.167 350-730v96ZM220-140v-434 434Z" />
+                                </svg>
+                                <p class="u-mb-clear">Press to open door</p>
+                            </button>
                         </p>
                     </div>
                 </div>
@@ -69,14 +79,17 @@
                 <div class="o-layout o-layout--justify-space-between">
                     <aside class="c-aside ">
                         <div class="c-card">
-                            <div class="c-card__body">
-                                <h2>
-                                    Configuration
-                                </h2>
-                                <div class="c-tee js-door-setting">Door on timer:</div>
-                                <div>
-                                    <div class="js-door-opening">Opening -</div> 
-                                    <div class="js-door-closing">Closing -</div>
+                            <div class="c-card__body o-container">
+                                <div class="o-layout o-layout--justify-space-between">
+                                    <div>
+                                        <h2>
+                                            Configuration
+                                        </h2>
+                                        <div class="js-door-setting u-mb-clear">Door on timer:</div>
+                                        <div class="js-dash-door-time">
+                                        </div>
+                                    </div>
+                                    <div><a class="o-button-reset c-button c-button--meta js-toggle-configuration">Edit</a></div>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +166,7 @@
                                         <h2 class="u-mb-clear">
                                             Sensor Information
                                         </h2>
-                                        <p class="u-color-text-lighter">
+                                        <p class="u-color-text-lighter u-mb-clear">
                                             Current or most recent readings
                                         </p>
                                     </div>
@@ -166,47 +179,55 @@
                                         <h3 class="u-mb-clear">
                                             Temperature
                                         </h3>
-                                        <p class="js-temperature">
-                                            xxx
-                                        </p>
-                                        <div>
-                                            <div id="chart-temp" class="c-chart js-chart_temp"></div>
+                                        <div class="c-chart">
+                                            <p class="c-chart__value js-temperature">
+                                                xxx
+                                            </p>
+                                            <div>
+                                                <div id="chart-temp" class="c-chart__graph js-chart_temp"></div>
+                                            </div>
                                         </div>
                                         <div class="c-sensor o-layout__item">
                                             <h3 class="u-mb-clear">
                                                 C02 value
                                             </h3>
-                                            <p class="js-co2value">
-                                                xxx
-                                            </p>
-                                            <div>
-                                                <div id="chart-co2" class="c-chart js-chart_co0"></div>
+                                            <div class="c-chart">
+                                                <p class="js-co2value c-chart__value">
+                                                    xxx
+                                                </p>
+                                                <div>
+                                                    <div id="chart-co2" class="c-chart__graph js-chart_co0"></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
                                     <div class="o-layout__item u-1-of-2-bp1 o-apex-chart">
                                         <h3 class="u-mb-clear">
                                             Humidity
                                         </h3>
-                                        <p class="js-humidity">
-                                            xxx
-                                        </p>
-                                        <div>
-                                            <div id="chart-hum" class="c-chart js-chart_hum"></div>
+                                        <div class="c-chart">
+                                            <p class="js-humidity c-chart__value">
+                                                xxx
+                                            </p>
+                                            <div>
+                                                <div id="chart-hum" class="c-chart__graph js-chart_hum"></div>
+                                            </div>
                                         </div>
                                         <div class="c-sensor o-layout__item">
                                             <h3 class="u-mb-clear">
                                                 Brightness
                                             </h3>
-                                            <p class="js-brightness">
-                                                xxx
-                                            </p>
-                                            <div>
-                                                <div id="chart-bright" class="c-chart js-chart_bright"></div>
+                                            <div class="c-chart">
+                                                <p class="js-brightness c-chart__value">
+                                                    xxx
+                                                </p>
+                                                <div>
+                                                    <div id="chart-bright" class="c-chart__graph js-chart_bright"></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
                                 </div>
                             </div>
@@ -250,14 +271,44 @@
             </nav>
         </div>
     </div>
-    <script>
-        // toggle a class on the body to show/hide the mobile menu when every js-toggle-menu is clicked
-        document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
-            el.addEventListener('click', function () {
-                document.body.classList.toggle('has-mobile-nav');
-            });
-        });
-    </script>
+    <div class="c-popup">
+        <!-- <div class="c-popup__overlay"></div> -->
+        <div class="c-popup__body">
+            <div class="o-container">
+                <div class="o-layout o-layout--justify-center">
+                    <div class="c-popup__wrap">
+                    <div class="c-card">
+                        <div class="c-card__body o-container">
+                            <div class="o-layout o-layout--justify-space-between">
+                                <h2 class="u-mb-clear">Change Configuration</h2>
+                                <button class="o-button-reset c-icon-button js-toggle-configuration">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+                                        <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="c-card__body">
+                            <div class="js-config-form">
+                                <h2 class="u-mb-clear">Select your mode:</h2>
+                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-mode="manual">
+                                <label for="radioBtn1">Manual time selection</label><br>
+                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-mode="auto">
+                                <label for="radioBtn2">Automatic time selection</label><br>
+                                <div class="js-time_selection">
+                                </div>
+                                <h2 class="u-mb-clear">Select a feeding moment:</h2>
+                                <label for="time2">Feeding</label>
+                                <input class="js-feedingtime-form" type="time" id="time2" name="time2"><br>
+                                <input class="js-submit-config" type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 </body>
 
 </html>

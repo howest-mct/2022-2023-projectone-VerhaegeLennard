@@ -45,8 +45,8 @@ class DataRepository:
         return Database.get_rows(sql)
     
     @staticmethod
-    def read_config(user_id):
+    def read_config(id):
         sql = "SELECT * from gebruiker WHERE GebruikerId = %s"
-        params = [user_id]
+        params = [id]
         return Database.get_one_row(sql, params)
 

@@ -49,6 +49,10 @@ img {
   max-width: 100%;
 }
 
+svg {
+  fill: currentColor;
+}
+
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -66,15 +70,23 @@ html {
   background-color: #f8f9fa;
 }
 
+.c-popup {
+  display: none;
+}
+
+body.has-popup .c-popup {
+  display: block;
+}
+
 /*
     Customize the background color and color to match your design.
 */
 ::-moz-selection {
-  background: #5c7cfa;
+  background: #ff8787;
   color: white;
 }
 ::selection {
-  background: #5c7cfa;
+  background: #ff8787;
   color: white;
 }
 
@@ -90,8 +102,8 @@ h4,
 h5,
 h6,
 strong {
-  color: #212529;
-  font-weight: 600;
+  color: currentColor;
+  font-weight: 700;
 }
 
 h1 {
@@ -157,25 +169,25 @@ figcaption {
 hr {
   border: 0;
   height: 1px;
-  background: #dee2e6;
+  background: #ff6b6b;
   margin-bottom: 1.7142857143rem;
 }
 
 a {
-  color: #4c6ef5;
+  color: #ff6b6b;
   transition: all 0.1s ease-in-out;
 }
 
 a:visited {
-  color: #4c6ef5;
+  color: #ff6b6b;
 }
 
 a:hover {
-  color: #5c7cfa;
+  color: #ff8787;
 }
 
 a:active {
-  color: #4263eb;
+  color: #fa5252;
 }
 
 /*---------------------------------------/*
@@ -232,7 +244,7 @@ a:active {
 }
 
 .o-row--primary {
-  background: #4263eb;
+  background: #fa5252;
 }
 
 .o-row--grey-dark {
@@ -403,6 +415,10 @@ a:active {
   ---
   The icon button component is used to display a button with an icon
 */
+.c-icon svg {
+  fill: currentColor;
+}
+
 .c-icon-button {
   display: flex;
   align-items: center;
@@ -477,6 +493,16 @@ a:active {
   position: relative;
 }
 
+.c-chart {
+  position: relative;
+}
+.c-chart__value {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /*
   Components: Nav
   ---
@@ -514,7 +540,7 @@ a:active {
 .c-nav__link:-moz-any-link {
   display: block;
   font-weight: 600;
-  color: #dbe4ff;
+  color: #ffffff;
   text-decoration: none;
   border-radius: 6px;
 }
@@ -522,18 +548,18 @@ a:active {
 .c-nav__link:any-link {
   display: block;
   font-weight: 600;
-  color: #dbe4ff;
+  color: #ffffff;
   text-decoration: none;
   border-radius: 6px;
 }
 .c-nav__item--active .c-nav__link:-moz-any-link {
   color: #edf2ff;
-  background-color: #364fc7;
+  background-color: #ff6b6b;
   padding: 0.5714285714rem 1.1428571429rem;
 }
 .c-nav__item--active .c-nav__link:any-link {
   color: #edf2ff;
-  background-color: #364fc7;
+  background-color: #ff6b6b;
   padding: 0.5714285714rem 1.1428571429rem;
 }
 .c-nav--mobile .c-nav__link:-moz-any-link {
@@ -581,8 +607,8 @@ a:active {
   font-weight: 600;
   text-decoration: none;
   color: #edf2ff;
-  background-color: #4263eb;
-  border: 1px solid #4263eb;
+  background-color: #ff6b6b;
+  border: 1px solid #fa5252;
   -moz-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
 }
@@ -594,36 +620,38 @@ a:active {
   font-weight: 600;
   text-decoration: none;
   color: #edf2ff;
-  background-color: #4263eb;
-  border: 1px solid #4263eb;
+  background-color: #ff6b6b;
+  border: 1px solid #fa5252;
   transition: background-color 0.2s ease-in-out;
 }
 .c-button:-moz-any-link:hover {
-  background-color: #4c6ef5;
+  background-color: #fa5252;
 }
 .c-button:hover,
 .c-button:any-link:hover {
-  background-color: #4c6ef5;
+  background-color: #fa5252;
 }
 
 .c-button--meta:-moz-any-link {
-  color: #495057;
-  background-color: white;
-  border-color: #ced4da;
+  color: #ff6b6b;
+  background-color: #fff5f5;
+  border-color: #ff8787;
 }
 
 .c-button--meta,
 .c-button--meta:any-link {
-  color: #495057;
-  background-color: white;
-  border-color: #ced4da;
+  color: #ff6b6b;
+  background-color: #fff5f5;
+  border-color: #ff8787;
 }
 .c-button--meta:-moz-any-link:hover {
-  background-color: #f8f9fa;
+  background-color: #ff8787;
+  color: #fff5f5;
 }
 .c-button--meta:hover,
 .c-button--meta:any-link:hover {
-  background-color: #f8f9fa;
+  background-color: #ff8787;
+  color: #fff5f5;
 }
 
 /*
@@ -665,7 +693,7 @@ a:active {
   padding: 1.7142857143rem 1.7142857143rem;
 }
 .c-card__body + .c-card__body {
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid #ff8787;
 }
 
 /*
@@ -674,7 +702,7 @@ a:active {
     The attachments component is used to display a list of attachments
 */
 .c-attachments {
-  border: 1px solid #e9ecef;
+  border: 1px solid #ff8787;
   border-radius: 6px;
 }
 
@@ -687,7 +715,7 @@ a:active {
   padding: 0.8571428571rem 1.1428571429rem;
 }
 .c-attachments__item + .c-attachments__item {
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid #ff8787;
 }
 
 .c-attachments__icon {
@@ -726,7 +754,7 @@ a:active {
   top: 2px;
   bottom: 2px;
   left: calc(1.7142857143rem - 1px);
-  background-color: #e9ecef;
+  background-color: #ff8787;
 }
 
 .c-timeline__item {
@@ -740,21 +768,22 @@ a:active {
   width: 3.4285714286rem;
   aspect-ratio: 1/1;
   border-radius: 100%;
-  background-color: #f1f3f5;
+  background-color: #fff5f5;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #495057;
+  color: #ff6b6b;
   border: 2px solid white;
 }
 .c-timeline__icon svg {
   fill: currentColor;
+  width: 80%;
 }
 
 .c-timeline__icon--advanced {
-  background-color: #dbe4ff;
-  color: #4263eb;
+  background-color: #fff5f5;
+  color: #fa5252;
 }
 
 .c-timeline__icon--complete {
@@ -837,7 +866,7 @@ a:active {
 
 .c-mobile-nav__body {
   position: relative;
-  background-color: #4263eb;
+  background-color: #fa5252;
   color: white;
   padding: 1.7142857143rem;
   height: 100%;
@@ -860,6 +889,54 @@ a:active {
   opacity: 0.25;
 }
 .has-mobile-nav .c-mobile-nav__body {
+  translate: 0 0;
+}
+
+.c-popup__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.c-popup__wrap {
+  width: 32rem;
+  box-shadow: inset;
+}
+@media (max-width: 36.0625em) {
+  .c-popup__wrap {
+    width: 90%;
+  }
+}
+
+.c-popup__body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  max-width: 40rem;
+}
+@media (max-width: 36.0625em) {
+  .c-popup__body {
+    width: 90%;
+  }
+}
+
+.has-popup {
+  overflow: hidden;
+}
+.has-popup .c-popup {
+  pointer-events: auto;
+}
+.has-popup .c-popup__overlay {
+  pointer-events: none;
+}
+.has-popup .c-popup__body {
   translate: 0 0;
 }
 

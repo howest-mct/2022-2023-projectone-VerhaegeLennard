@@ -2,7 +2,7 @@ import threading
 import time
 import datetime
 from repositories.DataRepository import DataRepository
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from RPi import GPIO
@@ -86,6 +86,7 @@ def run_hardware():
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door closing ...")
                 motor_deur.draai(-500, 0.001)
+                socketio.emit('B2F_current_door_icon', {'status': 'closed'})
                 status_luik = 0
             if status_luik == 11:
                 print("De deur gaat OPEN")
@@ -95,6 +96,7 @@ def run_hardware():
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door opening ...")
                 motor_deur.draai(500, 0.001)
+                socketio.emit('B2F_current_door_icon', {'status': 'opened'})
                 status_luik = 0
             status_knop_luik = 0
             toonOpLCD()
@@ -175,7 +177,6 @@ def start_thread():
 def hallo():
     return "Server is running, er zijn momenteel geen API endpoints beschikbaar."
 
-
 @app.route(ENDPOINT + '/devices/', methods=['GET'])
 def get_devices():
     data = DataRepository.read_all_devices()
@@ -191,8 +192,8 @@ def get_timeline_history():
     data = DataRepository.read_history_timeline()
     return jsonify(data), 200
 
-@app.route(ENDPOINT + '/config/', methods=['GET'])
-def get_config():
+@app.route(ENDPOINT + '/config/<user_id>/', methods=['GET'])
+def get_config(user_id):
     data = DataRepository.read_config(user_id)
     return jsonify(data), 200
 
@@ -202,6 +203,12 @@ def initial_connection():
     global lichtintensiteit, eCO2, TVOC, temperatuur, luchtvochtigheid
     print('A new client connect')
     socketio.emit('B2F_new_sensor_values', {'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
+    data = DataRepository.read_last_device_history(4)
+    laatste_status_deur = data["ActieId"]
+    if laatste_status_deur == 10:
+        socketio.emit('B2F_current_door_icon',{'status': 'opened'})
+    if laatste_status_deur == 11:
+        socketio.emit('B2F_current_door_icon',{'status': 'closed'})
     # # Send to the client!
     # vraag alle devices op uit de db
     # devices = DataRepository.read_all_devices()
