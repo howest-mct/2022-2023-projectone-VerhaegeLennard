@@ -903,6 +903,16 @@ a:active {
   transition: all 0.2s ease;
 }
 
+.c-popup__wrap {
+  width: 32rem;
+  box-shadow: inset;
+}
+@media (max-width: 36.0625em) {
+  .c-popup__wrap {
+    width: 90%;
+  }
+}
+
 .c-popup__body {
   position: fixed;
   top: 50%;

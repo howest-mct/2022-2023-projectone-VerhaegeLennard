@@ -1038,6 +1038,15 @@ a:active {
   transition: all 0.2s ease;
 }
 
+.c-popup__wrap {
+  width: 32rem;
+  box-shadow: inset;
+
+  @include mq(bp1, max) {
+    width: 90%;
+  }
+  }
+
 .c-popup__body {
   position: fixed;
   top: 50%;
