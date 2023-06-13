@@ -675,6 +675,7 @@ a:active {
 .c-button-group {
   display: flex;
   gap: 1.1428571429rem;
+  flex-wrap: wrap;
 }
 
 /*

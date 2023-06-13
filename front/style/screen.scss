@@ -802,6 +802,7 @@ a:active {
 .c-button-group {
   display: flex;
   gap: $space-s;
+  flex-wrap: wrap;
 }
 
 /*

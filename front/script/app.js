@@ -19,10 +19,8 @@ const userId = 1
 const valueToPercent = function (value, maxValue, minValue) {
   var range = Math.abs(maxValue - minValue);
   var percentage = value / range * 100
-  console.log(percentage)
   return percentage
 }
-
 
 // #region ***  DOM references                           ***********
 // #endregion
@@ -56,7 +54,6 @@ const showHistory = function (jsonObject) {
 
 const showNewSensorValues = function (jsonObject) {
   globalThis
-  console.log(jsonObject)
   let htmlTempValue = document.querySelector('.js-temperature')
   let htmlCo2Value = document.querySelector('.js-co2value')
   let htmlHumidity = document.querySelector('.js-humidity')
@@ -116,6 +113,8 @@ const showConfig = function (jsonObject) {
     htmlDoorModus.innerHTML = `Door controlled automaticaly`
     hideConfigDoorTime()
   }
+  htmlUsername = document.querySelector('.js-username')
+  htmlUsername.innerHTML = `${jsonObject.GebruikersNaam}'s Chicken Coop`
 }
 
 const showTimeForm = function () {
@@ -168,29 +167,31 @@ const addConfigPopup = function () {
 
 
 const addMobileMenu = function () {
-  document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
-    el.addEventListener('click', function () {
+  const elements = document.querySelectorAll('.js-toggle-menu');
+  elements.forEach(function (element) {
+    element.addEventListener('click', function () {
       document.body.classList.toggle('has-mobile-nav');
+      console.log('nav');
     });
   });
-}
+};
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
 const getDevices = function () {
-  handleData(`http://192.168.168.169:5000/api/v1/devices/`, showDevices, showError)
+  handleData(`http://${lanIP}/api/v1/devices/`, showDevices, showError)
 }
 
 const getDeviceHistory = function (id) {
-  handleData(`http://192.168.168.169:5000/api/v1/devices/${id}/`, showHistory, showError)
+  handleData(`http://${lanIP}/api/v1/devices/${id}/`, showHistory, showError)
 }
 
 const getTimeline = function () {
-  handleData(`http://192.168.168.169:5000/api/v1/timeline/`, showTimeline, showError)
+  handleData(`http://${lanIP}/api/v1/timeline/`, showTimeline, showError)
 }
 
 const getUserConfig = function (id) {
-  handleData(`http://192.168.168.169:5000/api/v1/config/${id}/`, showConfig, showError)
+  handleData(`http://${lanIP}/api/v1/config/${id}/`, showConfig, showError)
 }
 // #endregion
 
@@ -200,7 +201,6 @@ const listenToSocket = function () {
     console.log('verbonden met socket webserver');
   });
   socketio.on('B2F_new_sensor_values', function (jsonObject) {
-    console.log(jsonObject)
     showNewSensorValues(jsonObject)
   });
   socketio.on('B2F_new_timeline', function () {
@@ -219,8 +219,10 @@ const listenToBtnDevice = function () {
       getDeviceHistory(btn.getAttribute('data-id'))
     })
 }
+const listenToUIDetail = function () {
+}
 
-const listenToUI = function () {
+const listenToUIDash = function () {
   const buttons = document.querySelectorAll('.js-button')
   for (const btn of buttons)
     btn.addEventListener('click', function () {
@@ -620,16 +622,17 @@ const init = function () {
     getTimeline()
     init_charts_dash()
     addConfigPopup()
+    listenToUIDash();
+    addMobileMenu()
   }
 
   else if (htmlHistory) {
     getDevices()
     getDeviceHistory()
     socketio.emit('F2B_get_current_readings')
+    listenToUIDetail()
+    addMobileMenu()
   }
-
-  listenToUI();
-  addMobileMenu()
 
 };
 
