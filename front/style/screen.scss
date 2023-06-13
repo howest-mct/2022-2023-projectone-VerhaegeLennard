@@ -572,6 +572,9 @@ a:active {
   svg {
     fill: currentColor;
   }
+  &__title {
+    transform: scale(140%);
+  }
 }
 
 .c-icon-button {
@@ -737,6 +740,7 @@ a:active {
   width: calc($baseline * 8);
   aspect-ratio: 1/1;
   border-radius: 100%;
+  color: $color-primary;
 }
 
 .c-author__meta {
@@ -1118,6 +1122,10 @@ a:active {
 
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pt-medium {
+  padding-top: $space-m;
 }
 
 .u-mb-clear {

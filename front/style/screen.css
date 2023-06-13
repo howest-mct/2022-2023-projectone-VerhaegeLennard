@@ -418,6 +418,9 @@ a:active {
 .c-icon svg {
   fill: currentColor;
 }
+.c-icon__title {
+  transform: scale(140%);
+}
 
 .c-icon-button {
   display: flex;
@@ -589,6 +592,7 @@ a:active {
   width: 4.5714285714rem;
   aspect-ratio: 1/1;
   border-radius: 100%;
+  color: #ff6b6b;
 }
 
 .c-author__meta {
@@ -977,6 +981,10 @@ a:active {
 */
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pt-medium {
+  padding-top: 1.7142857143rem;
 }
 
 .u-mb-clear {
