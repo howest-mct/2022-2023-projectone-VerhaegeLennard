@@ -53,6 +53,11 @@ svg {
   fill: currentColor;
 }
 
+input {
+  margin-top: 0.1428571429rem;
+  margin-bottom: 0.1428571429rem;
+}
+
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -989,6 +994,10 @@ a:active {
 
 .u-mb-clear {
   margin-bottom: 0;
+}
+
+.u-mt-medium {
+  margin-top: 1.7142857143rem;
 }
 
 .u-mb-xxs {

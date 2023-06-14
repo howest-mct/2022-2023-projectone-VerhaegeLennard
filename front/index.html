@@ -51,7 +51,7 @@
                             <svg class="c-icon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M480-255q61-15 100.5-70T620-446.279v-88.954L480-605l-140 69.767v88.954q0 66.279 39.812 121.297Q419.625-269.965 480-255ZM160-120v-480l320-240 320 240v480H160Zm70-70h500v-375L480-753 230-565.333V-190Zm250-282Z"/></svg>
                             <div class="c-author__content">
                                 <h1 class="c-author__name u-mb-clear js-username">Lennard's Chicken Coop</h1>
-                                <p class="c-author__meta u-mb-clear">System running since: </p>
+                                <p class="c-author__meta u-mb-clear js-feedingtime">System running since: </p>
                             </div>
                         </div>
                     </div>
@@ -289,18 +289,22 @@
                             </div>
                         </div>
                         <div class="c-card__body">
-                            <div class="js-config-form">
-                                <h2 class="u-mb-clear">Select your mode:</h2>
-                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-mode="manual">
-                                <label for="radioBtn1">Manual time selection</label><br>
-                                <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-mode="auto">
-                                <label for="radioBtn2">Automatic time selection</label><br>
-                                <div class="js-time_selection">
+                            <div class="js-config-form o-layout">
+                                <div class="o-layout__item u-mb-xxs">
+                                    <h2 class="u-mb-clear">Select your mode:</h2>
+                                    <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-id="manual">
+                                    <label for="radioBtn1">Manual time selection</label><br>
+                                    <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-id="auto">
+                                    <label for="radioBtn2">Automatic time selection</label><br>
                                 </div>
-                                <h2 class="u-mb-clear">Select a feeding moment:</h2>
-                                <label for="time2">Feeding</label>
-                                <input class="js-feedingtime-form" type="time" id="time2" name="time2"><br>
-                                <input class="js-submit-config" type="submit" value="Submit">
+                                <div class="js-time_selection o-layout__item u-mb-xs">
+                                </div>
+                                <div class="o-layout__item u-mb-xxs">
+                                    <h2 class="u-mb-clear">Select a feeding moment:</h2>
+                                    <label for="time2">Feeding</label>
+                                    <input class="js-config-input" type="time" id="time2" name="time2" data-id="feedingmoment"><br>
+                                </div>
+                                <input class="js-submit-config js-toggle-configuration o-button-reset c-button c-button--primary" type="submit" value="Submit">
                             </div>
                         </div>
                     </div>
