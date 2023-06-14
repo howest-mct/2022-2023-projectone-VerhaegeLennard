@@ -49,4 +49,17 @@ class DataRepository:
         sql = "SELECT * from gebruiker WHERE GebruikerId = %s"
         params = [id]
         return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def update_config_full(id, modus, open, sluit, voer):
+        # sql = "UPDATE"
+        # params = [id]
+        # return Database.get_one_row(sql, params)
+        print('repo')
+
+    def update_config_small(id, modus, voer):
+        # sql = "UPDATE"
+        # params = [id]
+        # return Database.get_one_row(sql, params)
+        print('repo')
 

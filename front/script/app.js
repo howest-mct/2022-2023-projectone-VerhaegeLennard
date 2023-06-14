@@ -30,7 +30,7 @@ const showDevices = function (jsonObject) {
   let htmlDeviceBtns = document.querySelector('.js-devicebtns')
   let html = ""
   for (let device of jsonObject) {
-    if ([6, 7, 8, 9, 10].includes(device.DeviceId)){
+    if ([6, 7, 8, 9, 10].includes(device.DeviceId)) {
       html += `<button type="button" class="o-button-reset c-button c-button--meta js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
     }
   }
@@ -121,9 +121,9 @@ const showTimeForm = function () {
   console.log('toon form')
   document.querySelector('.js-time_selection').innerHTML = `<h2 class="u-mb-clear">Time Selection</h2>
   <label for="time1">Opening:</label>
-  <input class="js-opentime-selection" type="time" id="time1" name="time1"><br>
+  <input class="js-opentime-selection js-config-input" type="time" id="time1" name="time1" data-id="opentime"><br>
   <label for="time2">Closing</label>
-  <input class="js-closetime-selection" type="time" id="time2" name="time2"><br>`
+  <input class="js-closetime-selection js-config-input" type="time" id="time2" name="time2" data-id="closetime"><br>`
   listenToTimeSelection()
 }
 
@@ -233,43 +233,65 @@ const listenToUIDash = function () {
   const radiobuttonsTimeMode = document.querySelectorAll('.js-time_mode_selection')
   for (const radiobutton of radiobuttonsTimeMode)
     radiobutton.addEventListener('click', function () {
-      if (radiobutton.getAttribute('data-mode') == 'manual') {
+      if (radiobutton.getAttribute('data-id') == 'manual') {
         showTimeForm()
       }
-      if (radiobutton.getAttribute('data-mode') == 'auto') {
+      if (radiobutton.getAttribute('data-id') == 'auto') {
         hideTimeForm()
       }
+      if (document.querySelector('.js-config-form').classList.contains('ListenerAdded')) {
+        console.info('Listener already added')
+      } else {
+        listenToPopupSubmit()
+      }
+
     })
   // const editBtn = document.querySelector('.js-btnedit')
   // editBtn.addEventListener('click', function () {
   //   showConfigPopup()
   // })
-
-  const formSubmit = document.querySelector('.js-submit-config')
-  formSubmit.addEventListener('click', function () {
-    const timeModeSelections = document.querySelectorAll('.js-time_mode_selection');
-    timeModeSelections.forEach(function (selection) {
-      selection.addEventListener('click', function () {
-        const selectedValue = document.querySelector('input[name="TimeMode"]:checked').value;
-        console.log(selectedValue);
-      });
-    });
-    const feedingTimeSelection = document.querySelector('.js-feedingtime-form').value
-
-    console.log(feedingTimeSelection)
-  })
 };
 
-const listenToTimeSelection = function () {
-  const opentimeSelection = document.querySelector('js-opentime-selection')
-  opentimeSelection.addEventListener('click', function () {
-    console.log(opentimeSelection.value)
-  })
+const listenToPopupSubmit = function () {
+  const formSubmit = document.querySelector('.js-submit-config')
+  formSubmit.addEventListener('click', function () {
+    var dictSettings = {};
+    dictSettings["user"] = userId
+    const modus = document.querySelector('input[name="TimeMode"]:checked').value
+    dictSettings["Modus"] = modus
 
-  const closetimeSelection = document.querySelector('js-closetime-selection').value
-  closetimeSelection.addEventListener('click', function () {
-    console.log(closetimeSelection.value)
+    // .push({
+    //   "Modus": modus
+    // });
+    const inputs = document.querySelectorAll('.js-config-input')
+    for (const input of inputs) {
+      if (input.type == 'time') {
+        const dict_key = input.getAttribute('data-id')
+        console.log(dict_key)
+        dictSettings[dict_key] = input.value
+
+        // dictSettings.push({
+        //   dict_key: input.value
+        // });
+
+      }
+    }
+    console.log(dictSettings)
+    socketio.emit('',dictSettings)
   })
+  document.querySelector('.js-config-form').classList.add('ListenerAdded')
+}
+
+const listenToTimeSelection = function () {
+  // const opentimeSelection = document.querySelector('js-opentime-selection')
+  // opentimeSelection.addEventListener('click', function () {
+  //   console.log(opentimeSelection.value)
+  // })
+
+  // const closetimeSelection = document.querySelector('js-closetime-selection').value
+  // closetimeSelection.addEventListener('click', function () {
+  //   console.log(closetimeSelection.value)
+  // })
 }
 
 // #endregion

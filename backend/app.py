@@ -227,6 +227,15 @@ def control_motor(data):
     elif motor_id == 'door':
         status_knop_luik = 1
 
+@socketio.on('F2B_new_config')
+def change_config(dict_settings):
+    if dict_settings['Modus'] == 'Manual':
+        print('manueel')
+        DataRepository.update_config_full(dict_settings['user'], dict_settings['Modus'], dict_settings['opentime'], dict_settings['closetime'], dict_settings['feedingmoment'])
+    if dict_settings['Modus'] == 'Auto':
+        print('auto')
+        DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['opentime'], dict_settings['closetime'], dict_settings['feedingmoment'])
+
 if __name__ == '__main__':
     try:
         start_thread()
