@@ -106,7 +106,7 @@ const showConfig = function (jsonObject) {
   htmlDoorModus = document.querySelector('.js-door-setting')
   modusDeur = jsonObject.Modus
   if (modusDeur == 1) {
-    htmlDoorModus.innerHTML = `Door controlled by user timer`
+    htmlDoorModus.innerHTML = `Door controlled manually`
     showConfigDoorTime(jsonObject.OpenTijd, jsonObject.SluitTijd)
   }
   if (modusDeur == 0) {
@@ -114,16 +114,24 @@ const showConfig = function (jsonObject) {
     hideConfigDoorTime()
   }
   htmlUsername = document.querySelector('.js-username')
+  htmlFeedingTime = document.querySelector('.js-feedingtime')
   htmlUsername.innerHTML = `${jsonObject.GebruikersNaam}'s Chicken Coop`
+  const tijdTotVoer = getTimeDifference(jsonObject.VoederTijd)
+  console.log(tijdTotVoer)
+  htmlFeedingTime.innerHTML = `Time until next feeding: <strong>${tijdTotVoer.hours}u ${tijdTotVoer.minutes}min</strong>`
 }
 
 const showTimeForm = function () {
   console.log('toon form')
   document.querySelector('.js-time_selection').innerHTML = `<h2 class="u-mb-clear">Time Selection</h2>
-  <label for="time1">Opening:</label>
-  <input class="js-opentime-selection js-config-input" type="time" id="time1" name="time1" data-id="opentime"><br>
-  <label for="time2">Closing</label>
-  <input class="js-closetime-selection js-config-input" type="time" id="time2" name="time2" data-id="closetime"><br>`
+  <div>
+    <label for="time1">Opening:</label>
+    <input class="js-opentime-selection js-config-input" type="time" id="time1" name="time1" data-id="opentime"><br>
+  </div>
+  <div>
+    <label for="time2">Closing</label>
+    <input class="js-closetime-selection js-config-input" type="time" id="time2" name="time2" data-id="closetime"><br>
+  </div>`
   listenToTimeSelection()
 }
 
@@ -134,11 +142,11 @@ const hideTimeForm = function () {
 
 const showConfigDoorTime = function (opentijd, sluittijd) {
   document.querySelector('.js-dash-door-time').innerHTML = `<div>Opening - ${opentijd}</div>
-  <div>Closing - ${sluittijd}</div>`
+  <div>Closing - ${sluittijd}</div><div>Press 'edit' to use automatic controll</div>`
 }
 
 const hideConfigDoorTime = function () {
-  document.querySelector('.js-dash-door-time').innerHTML = `Automatic door controll`
+  document.querySelector('.js-dash-door-time').innerHTML = `Press 'edit' to use manual controll`
 }
 
 const showDoorIcon = function (jsonObject) {
@@ -175,6 +183,37 @@ const addMobileMenu = function () {
     });
   });
 };
+
+const getTimeDifference = function (targetTime) {
+  var currentTime = new Date(); // Step 1
+
+  // Step 2: Parse the target time
+  var targetHour = parseInt(targetTime.split(':')[0]);
+  var targetMinute = parseInt(targetTime.split(':')[1]);
+  var targetDateTime = new Date();
+  targetDateTime.setHours(targetHour);
+  targetDateTime.setMinutes(targetMinute);
+
+  // Check if the target time is in the future (negative time difference)
+  if (targetDateTime < currentTime) {
+    targetDateTime.setDate(targetDateTime.getDate() + 1); // Move to the next day
+  }
+
+  // Step 3: Calculate the time difference
+  var timeDifferenceMs = targetDateTime.getTime() - currentTime.getTime();
+
+  // Step 4: Convert the time difference to hours and minutes
+  var hours = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
+  var minutes = Math.floor((timeDifferenceMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  return { hours: hours, minutes: minutes };
+}
+
+// Usage example
+var targetTime = '14:30';
+var timeDifference = getTimeDifference(targetTime);
+console.log(timeDifference.hours + ' hours and ' + timeDifference.minutes + ' minutes');
+
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -209,6 +248,9 @@ const listenToSocket = function () {
   socketio.on('B2F_current_door_icon', function (jsonObject) {
     showDoorIcon(jsonObject)
   });
+  socketio.on('B2F_config_update', function () {
+    getUserConfig(userId)
+  })
 };
 
 const listenToBtnDevice = function () {

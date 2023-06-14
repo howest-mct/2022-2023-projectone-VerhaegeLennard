@@ -237,6 +237,7 @@ def change_config(dict_settings):
         dict_settings['Modus'] = 0
         print('auto')
         DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['feedingmoment'])
+    socketio.emit('B2F_config_update')
 
 if __name__ == '__main__':
     try:

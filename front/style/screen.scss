@@ -100,6 +100,7 @@ $font-family-primary: "Inter Web", Helvetica, arial, sans-serif;
 $baseline: calc(8 / $root-font-size * 1rem);
 
 // spacing scale
+$space-xxxs: calc($baseline * 0.25); // 2px
 $space-xxs: calc($baseline * 0.5); // 4px
 $space-xxs: calc($baseline * 1); // 8px
 $space-xs: calc($baseline * 1.5); // 12px
@@ -186,6 +187,11 @@ img {
 
 svg {
   fill: currentColor;
+}
+
+input {
+  margin-top: $space-xxxs;
+  margin-bottom: $space-xxxs;
 }
 
 /*---------------------------------------/*
@@ -1130,6 +1136,10 @@ a:active {
 
 .u-mb-clear {
   margin-bottom: 0;
+}
+
+.u-mt-medium {
+  margin-top: $space-m;
 }
 
 .u-mb-xxs {
