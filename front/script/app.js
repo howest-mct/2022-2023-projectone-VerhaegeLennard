@@ -277,7 +277,7 @@ const listenToPopupSubmit = function () {
       }
     }
     console.log(dictSettings)
-    socketio.emit('',dictSettings)
+    socketio.emit('F2B_new_config', dictSettings)
   })
   document.querySelector('.js-config-form').classList.add('ListenerAdded')
 }

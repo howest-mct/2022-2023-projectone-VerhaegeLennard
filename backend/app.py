@@ -231,10 +231,12 @@ def control_motor(data):
 def change_config(dict_settings):
     if dict_settings['Modus'] == 'Manual':
         print('manueel')
+        dict_settings['Modus'] = 1
         DataRepository.update_config_full(dict_settings['user'], dict_settings['Modus'], dict_settings['opentime'], dict_settings['closetime'], dict_settings['feedingmoment'])
     if dict_settings['Modus'] == 'Auto':
+        dict_settings['Modus'] = 0
         print('auto')
-        DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['opentime'], dict_settings['closetime'], dict_settings['feedingmoment'])
+        DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['feedingmoment'])
 
 if __name__ == '__main__':
     try:
