@@ -98,7 +98,7 @@ Dit is de feedback op mijn vragen.
 - feedback 7: Commits specifieker maken
 - feedback 8: Test metalen case
 
-## Gesprek 5 (Datum: 15/06/2023)
+## Gesprek 5 (Datum: 13/06/2023)
 
 Lector: Stijn & Dieter
 
