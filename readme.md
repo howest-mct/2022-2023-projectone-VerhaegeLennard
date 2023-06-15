@@ -97,3 +97,17 @@ Dit is de feedback op mijn vragen.
 - feedback 6: Gebruiksvriendelijker?
 - feedback 7: Commits specifieker maken
 - feedback 8: Test metalen case
+
+## Gesprek 5 (Datum: 15/06/2023)
+
+Lector: Stijn & Dieter
+
+Vragen voor dit gesprek:
+
+- [x] vraag 1: /
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: zorg voor afwerking van de site
+- feedback 2: behulzing in elkaar stoppen
+
