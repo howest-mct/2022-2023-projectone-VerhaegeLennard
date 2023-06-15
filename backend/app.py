@@ -84,14 +84,38 @@ def run_hardware():
     global status_knop_luik, status_knop_voer, modus, settings
     setup()
     settings = DataRepository.read_config(1)
-    print(settings)
     modus = settings["Modus"]
-    print(datetime.fromtimestamp(time.time()))
-    print(settings["OpenTijd"])
+    tijdnu = (f"{datetime.fromtimestamp(time.time()).strftime('%H')}:{datetime.fromtimestamp(time.time()).strftime('%M')}")
+    executed_once_open = False
+    executed_once_close = False
+    executed_once_feed = False
+    reset_var_last_run = time.time()
     while True:
+        now = time.time()
+        if (reset_var_last_run + 61 <= now):
+            executed_once_open = False
+            executed_once_close = False
+            executed_once_feed = False
+            reset_var_last_run = now
+
+        # print(settings)
+        tijdnu = (f"{datetime.fromtimestamp(time.time()).strftime('%H')}:{datetime.fromtimestamp(time.time()).strftime('%M')}")
         if modus == 1:
-            pass
+            if settings["OpenTijd"] == tijdnu and not executed_once_open:
+                print('Open de deur')
+                status_knop_luik = 1
+                executed_once_open = True
+            elif settings["SluitTijd"] == tijdnu and not executed_once_close:
+                print('Sluit de deur')
+                status_knop_luik = 1
+                executed_once_close = True
+        if settings["VoederTijd"] == tijdnu and not executed_once_feed:
+            print('Sluit de deur')
+            status_knop_voer = 1
+            executed_once_feed = True
         
+        
+
         if status_knop_luik == 1:
             DataRepository.add_history(
                 device_id=2, actie_id=6, waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
@@ -254,14 +278,16 @@ def control_motor(data):
 
 @socketio.on('F2B_new_config')
 def change_config(dict_settings):
+    global settings
     if dict_settings['Modus'] == 'Manual':
         print('manueel')
         dict_settings['Modus'] = 1
-        DataRepository.update_config_full(dict_settings['user'], dict_settings['Modus'], dict_settings['opentime'], dict_settings['closetime'], dict_settings['feedingmoment'])
+        DataRepository.update_config_full(dict_settings['user'], dict_settings['Modus'], dict_settings['OpenTijd'], dict_settings['SluitTijd'], dict_settings['VoederTijd'])
     if dict_settings['Modus'] == 'Auto':
         dict_settings['Modus'] = 0
         print('auto')
         DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['feedingmoment'])
+    settings = dict_settings
     socketio.emit('B2F_config_update')
 
 if __name__ == '__main__':

@@ -202,11 +202,11 @@ const showTimeForm = function () {
   document.querySelector('.js-time_selection').innerHTML = `<h2 class="u-mb-clear">Time Selection</h2>
   <div>
     <label for="time1">Opening:</label>
-    <input class="js-opentime-selection js-config-input" type="time" id="time1" name="time1" data-id="opentime"><br>
+    <input class="js-opentime-selection js-config-input" type="time" id="time1" name="time1" data-id="OpenTijd"><br>
   </div>
   <div>
     <label for="time2">Closing</label>
-    <input class="js-closetime-selection js-config-input" type="time" id="time2" name="time2" data-id="closetime"><br>
+    <input class="js-closetime-selection js-config-input" type="time" id="time2" name="time2" data-id="SluitTijd"><br>
   </div>`
   listenToTimeSelection()
 }
