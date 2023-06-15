@@ -110,4 +110,3 @@ Dit is de feedback op mijn vragen.
 
 - feedback 1: zorg voor afwerking van de site
 - feedback 2: behulzing in elkaar stoppen
-

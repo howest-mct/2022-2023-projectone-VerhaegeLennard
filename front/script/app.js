@@ -1,7 +1,6 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 
-// var ChartTemp = NaN
 var TempMinValue = -10;
 var TempMaxValue = 40;
 var TempRange = 50;
@@ -40,6 +39,13 @@ const showDevices = function (jsonObject) {
 
 const showHistory = function (jsonObject) {
   let htmlDeviceHistory = document.querySelector('.js-history__list')
+  htmlDeviceHistory.innerHTML = `Chart Loading...`
+  let dataChart = []
+
+  const meeteenheid_value = jsonObject[1]["Meeteenheid"]
+  const name_value = jsonObject[1]["Naam"]
+  const description_value = jsonObject[1]["Meeteenheid"]
+
   let html = "<table><tr><td>Timestamp</td><td>Value</td><td>Comment</td></tr>"
   for (const log of jsonObject) {
     html += `<tr>
@@ -47,8 +53,78 @@ const showHistory = function (jsonObject) {
     <td>${log.Waarde}</td>
     <td>${log.Commentaar}</td>
   </tr>`
+
+  dataChart.push({x:log.DatumTijd,y:log.Waarde})
   }
+
+  console.log(jsonObject)
   html += "</table>"
+  
+  var options = {
+    series: [{
+    name: `${name_value}`,
+    data: dataChart
+  }],
+    chart: {
+    type: 'area',
+    stacked: false,
+    height: 350,
+    zoom: {
+      type: 'x',
+      enabled: true,
+      autoScaleYaxis: true
+    },
+    toolbar: {
+      autoSelected: 'zoom'
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  markers: {
+    size: 0,
+  },
+  title: {
+    text: `Chart of ${name_value} (${description_value}) in the past 24h`,
+    align: 'left'
+  },
+  fill: {
+    type: 'gradient',
+    gradient: {
+      shadeIntensity: 1,
+      inverseColors: false,
+      opacityFrom: 0.5,
+      opacityTo: 0,
+      stops: [0, 90, 100]
+    },
+  },
+  yaxis: {
+    labels: {
+      formatter: function (val) {
+        return (val).toFixed(2);
+      },
+    },
+    title: {
+      text: `${meeteenheid_value}`
+    },
+  },
+  xaxis: {
+    type: 'datetime',
+  },
+  tooltip: {
+    shared: false,
+    y: {
+      formatter: function (val) {
+        return (val / 1000000).toFixed(0)
+      }
+    }
+  }
+  };
+
+  var chart = new ApexCharts(document.querySelector(".js-history__chart"), options);
+  chart.render();
+  console.log('Chart rendered')
+
   htmlDeviceHistory.innerHTML = html
 }
 
@@ -221,7 +297,11 @@ const getDevices = function () {
   handleData(`http://${lanIP}/api/v1/devices/`, showDevices, showError)
 }
 
-const getDeviceHistory = function (id) {
+// const getDevicesDetails = function (id) {
+//   handleData(`http://${lanIP}/api/v1/devices/${id}/details/`, showError)
+// }
+
+const getDeviceHistory = function (id) {  
   handleData(`http://${lanIP}/api/v1/devices/${id}/`, showHistory, showError)
 }
 
@@ -692,7 +772,7 @@ const init = function () {
 
   else if (htmlHistory) {
     getDevices()
-    getDeviceHistory()
+    // getDeviceHistory()
     socketio.emit('F2B_get_current_readings')
     listenToUIDetail()
     addMobileMenu()

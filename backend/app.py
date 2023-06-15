@@ -197,6 +197,11 @@ def get_config(user_id):
     data = DataRepository.read_config(user_id)
     return jsonify(data), 200
 
+# @app.route(ENDPOINT + '/devices/<id>/details/', methods=['GET'])
+# def get_device_details(id):
+#     data = DataRepository.read_device_details(id)
+#     return jsonify(data), 200
+
 # SOCKET IO
 @socketio.on('connect')
 def initial_connection():
