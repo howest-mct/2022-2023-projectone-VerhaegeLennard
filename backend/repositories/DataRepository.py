@@ -17,7 +17,7 @@ class DataRepository:
 
     @staticmethod
     def read_history_by_deviceid(id):
-        sql = "SELECT * from historiek WHERE DeviceId = %s ORDER BY volgnummer desc LIMIT 50"
+        sql = "SELECT d.DeviceId, h.DatumTijd, h.Waarde, d.Beschrijving, d.Meeteenheid, d.Naam, h.Commentaar FROM historiek h join device d on h.DeviceId = d.DeviceId where d.DeviceId = %s  AND h.DatumTijd >= DATE_SUB(NOW(), INTERVAL 1 DAY) ORDER BY h.DatumTijd desc"
         params = [id]
         return Database.get_rows(sql, params)
 
@@ -56,8 +56,15 @@ class DataRepository:
         params = [open,sluit,voer,modus,id]
         return Database.execute_sql(sql, params)
 
+    @staticmethod
     def update_config_small(id, modus, voer):
         sql = "UPDATE gebruiker SET VoederTijd = %s, Modus = %s WHERE GebruikerId = %s;"
         params = [voer,modus,id]
+        return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def read_device_details(id):
+        sql = "SELECT * FROM device WHERE DeviceId = %s"
+        params = [id]
         return Database.execute_sql(sql, params)
 
