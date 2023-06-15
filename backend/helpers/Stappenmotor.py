@@ -36,6 +36,10 @@ class Stappenmotor:
                 for i in range(7, -1, -1):
                     self.doe_stap(self.stappen[i])
                     time.sleep(delay)
+        GPIO.output(self.IN1, GPIO.LOW)
+        GPIO.output(self.IN2, GPIO.LOW)
+        GPIO.output(self.IN3, GPIO.LOW)
+        GPIO.output(self.IN4, GPIO.LOW)
 
     def doe_stap(self, stap):
         GPIO.output(self.IN1, stap[0])

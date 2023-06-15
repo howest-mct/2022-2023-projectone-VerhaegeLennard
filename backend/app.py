@@ -1,6 +1,7 @@
 import threading
 import time
-import datetime
+from datetime import datetime
+import os
 from repositories.DataRepository import DataRepository
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
@@ -22,6 +23,7 @@ motor_voer = Stappenmotor(6, 13, 19, 26)
 
 pushButtonLuik = 23
 pushButtonVoer = 25
+togglePowerButton = 18
 
 status_knop_luik = 0
 status_knop_voer = 0
@@ -56,22 +58,40 @@ def pushButtonVoer_callback(channel):
     status_knop_voer = 1
     # print("VOER")
 
+def togglePowerButton_callback(channel):
+    print("System shutting down...")
+    lcd.init_LCD()
+    lcd.write_message("System shutdown!")
+    os.system("sudo shutdown now")
+
 def setup():
     toonOpLCD()
     GPIO.setmode(GPIO.BCM)
     # GPIO.setup([pushButtonLuik, pushButtonVoer], GPIO.IN, GPIO.PUD_UP)
     GPIO.setup(pushButtonLuik, GPIO.IN, GPIO.PUD_UP)
     GPIO.setup(pushButtonVoer, GPIO.IN, GPIO.PUD_UP)
+    GPIO.setup(togglePowerButton, GPIO.IN, GPIO.PUD_UP)
 
     GPIO.add_event_detect(pushButtonLuik, GPIO.FALLING,
                           pushButtonLuik_callback, bouncetime=200)
     GPIO.add_event_detect(pushButtonVoer, GPIO.FALLING,
                           pushButtonVoer_callback, bouncetime=200)
+    GPIO.add_event_detect(togglePowerButton, GPIO.BOTH,
+                          togglePowerButton_callback, bouncetime=200)
+    
 
 def run_hardware():
-    global status_knop_luik, status_knop_voer
+    global status_knop_luik, status_knop_voer, modus, settings
     setup()
+    settings = DataRepository.read_config(1)
+    print(settings)
+    modus = settings["Modus"]
+    print(datetime.fromtimestamp(time.time()))
+    print(settings["OpenTijd"])
     while True:
+        if modus == 1:
+            pass
+        
         if status_knop_luik == 1:
             DataRepository.add_history(
                 device_id=2, actie_id=6, waarde=1, commentaar="Pushbutton luik bedienen ingedrukt")
