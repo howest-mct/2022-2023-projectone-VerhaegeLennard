@@ -85,6 +85,8 @@ def run_hardware():
     setup()
     settings = DataRepository.read_config(1)
     modus = settings["Modus"]
+    data = DataRepository.read_last_device_history(4)
+    status_luik = data['ActieId']
     tijdnu = (f"{datetime.fromtimestamp(time.time()).strftime('%H')}:{datetime.fromtimestamp(time.time()).strftime('%M')}")
     executed_once_open = False
     executed_once_close = False
@@ -92,6 +94,7 @@ def run_hardware():
     reset_var_last_run = time.time()
     while True:
         now = time.time()
+        modus = settings["Modus"]
         if (reset_var_last_run + 61 <= now):
             executed_once_open = False
             executed_once_close = False
@@ -101,20 +104,34 @@ def run_hardware():
         # print(settings)
         tijdnu = (f"{datetime.fromtimestamp(time.time()).strftime('%H')}:{datetime.fromtimestamp(time.time()).strftime('%M')}")
         if modus == 1:
+            # print(settings)
+            # print('manual mode')
             if settings["OpenTijd"] == tijdnu and not executed_once_open:
-                print('Open de deur')
+                print('Open de deur - manual')
                 status_knop_luik = 1
                 executed_once_open = True
             elif settings["SluitTijd"] == tijdnu and not executed_once_close:
-                print('Sluit de deur')
+                print('Sluit de deur - manual')
                 status_knop_luik = 1
                 executed_once_close = True
         if settings["VoederTijd"] == tijdnu and not executed_once_feed:
-            print('Sluit de deur')
+            print('Geef voer')
             status_knop_voer = 1
             executed_once_feed = True
         
-        
+        if modus == 0:
+            # print('auto mode')
+            if lichtintensiteit > 2000 and not executed_once_open and status_luik != 10:
+                print(lichtintensiteit)
+                print('Open de deur - auto')
+                status_knop_luik = 1
+                executed_once_open = True
+            if lichtintensiteit < 50 and not executed_once_close and status_luik != 11:
+                print(lichtintensiteit)
+                print(status_luik)
+                print('Sluit de deur - auto')
+                status_knop_luik = 1
+                executed_once_close = True
 
         if status_knop_luik == 1:
             DataRepository.add_history(
@@ -129,7 +146,7 @@ def run_hardware():
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door closing ...")
-                motor_deur.draai(-500, 0.001)
+                motor_deur.draai(-4700, 0.001)
                 socketio.emit('B2F_current_door_icon', {'status': 'closed'})
                 status_luik = 0
             if status_luik == 11:
@@ -139,7 +156,7 @@ def run_hardware():
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door opening ...")
-                motor_deur.draai(500, 0.001)
+                motor_deur.draai(7000, 0.001)
                 socketio.emit('B2F_current_door_icon', {'status': 'opened'})
                 status_luik = 0
             status_knop_luik = 0
@@ -285,9 +302,13 @@ def change_config(dict_settings):
         DataRepository.update_config_full(dict_settings['user'], dict_settings['Modus'], dict_settings['OpenTijd'], dict_settings['SluitTijd'], dict_settings['VoederTijd'])
     if dict_settings['Modus'] == 'Auto':
         dict_settings['Modus'] = 0
+        # print(dict_settings['VoederTijd'])
         print('auto')
-        DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['feedingmoment'])
+        DataRepository.update_config_small(dict_settings['user'], dict_settings['Modus'], dict_settings['VoederTijd'])
+        dict_settings['OpenTijd'] = ''
+        dict_settings['SluitTijd'] = ''
     settings = dict_settings
+    print(settings)
     socketio.emit('B2F_config_update')
 
 if __name__ == '__main__':
