@@ -1,12 +1,12 @@
 # Projectgegevens
 
-**VOORNAAM NAAM:** A B
+**VOORNAAM NAAM:** Lennard Verhaege
 
-**Sparringpartner:** C D
+**Sparringpartner:** Hanne Hellin
 
-**Projectsamenvatting in max 10 woorden:** E
+**Projectsamenvatting in max 10 woorden:**  Slim kippensysteem met monitoring, voedersysteem en automatisch luik
 
-**Projecttitel:** F
+**Projecttitel:** EiQ
 
 # Tips voor feedbackgesprekken
 
@@ -32,38 +32,81 @@
 
 # Feedforward gesprekken
 
-## Gesprek 1 (Datum: xx/xx/2023)
+## Gesprek 1 (Datum: 24/05/2023)
 
-Lector:
-
-Vragen voor dit gesprek:
-
-- vraag 1: V
-
-Dit is de feedback op mijn vragen.
-
-- feedback 1: G
-
-## Gesprek 2 (Datum: xx/xx/2023)
-
-Lector:
+Lector: Geert & Dieter
 
 Vragen voor dit gesprek:
 
--  vraag 1: V
+- vraag 1: Waarom werkt de klasse voor de lichtsensor niet naar behoren?
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
+- feedback 1: Reeds opgelost in code.
 
-## Gesprek 3 (Datum: xx/xx/2023)
+> Gesprekspunten:
+	
+	* Pd02 opdracht vergeten in te dienen -> wordt nog voor gekeken 		(herindienen 1e versie, deze was ok)
+	* Weerstandje tussen knoppen en raspberry plaatsen als veiligheid.
+	* Database OK
 
-Lector:
+## Gesprek 2 (Datum: 25/05/2023)
+
+Lector: Laprudence Christophe
 
 Vragen voor dit gesprek:
 
-- [x] vraag 1: V
+-  vraag 1: Wat stuur ik via de socketio en de API door?
+-  vraag 2: Hoeveel theats heb ik nodig?
+-  vraag 3: Stuur ik alles eerst naar de database door en verwerk van daaruit de data?
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
+- feedback 1: Hangt af van wat je doorstuurt, socketio is beter voor kleinere dingen zoals mijn knoppen en 1 sensorwaarde. Als je history van een sensor nodig hebt doe je dit via de API omdat dit veel data is.
+- feedback 2: Ik heb maar 1 threat nodig omdat ik binnen deze threats met vrschillende meetmomenten kan werken, door een if structuur. -> Dit zorgt er ook voor dat er geen probemen zijn bij gelijktijdig meten.
+- feedback 3: Alles eerst naar de DB, dit is de single point of truth.
+
+## Gesprek 3 (Datum: 30/05/2023)
+
+Lector: Dieter & Stijn
+
+Vragen voor dit gesprek:
+
+- [x] vraag 1: /
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Kom op tijd
+- feedback 2: Klein tandje bijsteken
+
+## Gesprek 4 (Datum: 06/06/2023)
+
+Lector: Christophe & Frederik
+
+Vragen voor dit gesprek:
+
+- [x] vraag 1: /
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Getallen afronden
+- feedback 2: Benamingen op website versimpelere voor casual users
+- feedback 3: Misschien een pagina maken om specifiekere historisch tonen?
+- feedback 4: Zodat je niet alleen een grote tabel hebt
+- feedback 5: Status van deur misschien toevoegen?
+- feedback 6: Gebruiksvriendelijker?
+- feedback 7: Commits specifieker maken
+- feedback 8: Test metalen case
+
+## Gesprek 5 (Datum: 13/06/2023)
+
+Lector: Stijn & Dieter
+
+Vragen voor dit gesprek:
+
+- [x] vraag 1: /
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: zorg voor afwerking van de site
+- feedback 2: behulzing in elkaar stoppen
