@@ -29,6 +29,21 @@ const showDevices = function (jsonObject) {
   let htmlDeviceBtns = document.querySelector('.js-devicebtns')
   let html = ""
   for (let device of jsonObject) {
+    if (device.Naam == 'BH1750') {
+      device.Naam = 'Lightintensity'
+    }
+    if (device.Naam == 'SGP30_CO2') {
+      device.Naam = 'CO₂'
+    }
+    if (device.Naam == 'SGP30_TVOC') {
+      device.Naam = 'Air particles'
+    }
+    if (device.Naam == 'DHT20_Hum') {
+      device.Naam = 'Humidity'
+    }
+    if (device.Naam == 'DHT20_Temp') {
+      device.Naam = 'Temperature'
+    }
     if ([6, 7, 8, 9, 10].includes(device.DeviceId)) {
       html += `<button type="button" class="o-button-reset c-button c-button--meta js-btndevice" data-id="${device.DeviceId}">${device.Naam}</button>`
     }
@@ -43,88 +58,118 @@ const showHistory = function (jsonObject) {
   let dataChart = []
 
   const meeteenheid_value = jsonObject[1]["Meeteenheid"]
-  const name_value = jsonObject[1]["Naam"]
+  let name_value = jsonObject[1]["Naam"]
   const description_value = jsonObject[1]["Meeteenheid"]
 
-  let html = "<table><tr><td>Timestamp</td><td>Value</td><td>Comment</td></tr>"
-  for (const log of jsonObject) {
-    html += `<tr>
-    <td>${log.DatumTijd}</td>
-    <td>${log.Waarde}</td>
-    <td>${log.Commentaar}</td>
-  </tr>`
+  if (name_value == 'BH1750') {
+    name_value = 'Lightintensity'
+  }
+  if (name_value == 'SGP30_CO2') {
+    name_value = 'CO₂'
+  }
+  if (name_value == 'SGP30_TVOC') {
+    name_value = 'Air particles'
+  }
+  if (name_value == 'DHT20_Hum') {
+    name_value = 'Humidity'
+  }
+  if (name_value == 'DHT20_Temp') {
+    name_value = 'Temperature'
+  }
 
-  dataChart.push({x:log.DatumTijd,y:log.Waarde})
+  // let html = "<table><tr><td>Timestamp</td><td>Value</td><td>Comment</td></tr>"
+  for (const log of jsonObject) {
+    //   html += `<tr>
+    //   <td>${log.DatumTijd}</td>
+    //   <td>${log.Waarde}</td>
+    //   <td>${log.Commentaar}</td>
+    // </tr>`
+
+    dataChart.push({ x: log.DatumTijd, y: log.Waarde })
   }
 
   console.log(jsonObject)
-  html += "</table>"
-  
+  // html += "</table>"
+
   var options = {
     series: [{
-    name: `${name_value}`,
-    data: dataChart
-  }],
+      name: `${name_value}`,
+      data: dataChart
+    }],
     chart: {
-    type: 'area',
-    stacked: false,
-    height: 350,
-    zoom: {
-      type: 'x',
-      enabled: true,
-      autoScaleYaxis: true
-    },
-    toolbar: {
-      autoSelected: 'zoom'
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  markers: {
-    size: 0,
-  },
-  title: {
-    text: `Chart of ${name_value} (${description_value}) in the past 24h`,
-    align: 'left'
-  },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shadeIntensity: 1,
-      inverseColors: false,
-      opacityFrom: 0.5,
-      opacityTo: 0,
-      stops: [0, 90, 100]
-    },
-  },
-  yaxis: {
-    labels: {
-      formatter: function (val) {
-        return (val).toFixed(2);
+      type: 'area',
+      stacked: false,
+      height: 350,
+      zoom: {
+        type: 'x',
+        enabled: true,
+        autoScaleYaxis: true
       },
+      toolbar: {
+        show: true,
+        autoSelected: 'zoom',
+        tools: {
+          download: false,
+          selection: true,
+          zoom: true,
+          zoomin: false,
+          zoomout: true,
+          pan: false,
+          reset: true | '<img src="/static/icons/reset.png" width="20">'
+        }
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    markers: {
+      size: 0,
     },
     title: {
-      text: `${meeteenheid_value}`
+      text: `${name_value} last 24h`,
+      align: 'left'
     },
-  },
-  xaxis: {
-    type: 'datetime',
-  },
-  tooltip: {
-    shared: false,
-    y: {
-      formatter: function (val) {
-        return (val / 1000000).toFixed(0)
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        inverseColors: false,
+        opacityFrom: 0.5,
+        opacityTo: 0,
+        stops: [0, 90, 100]
+      },
+    },
+    yaxis: {
+      labels: {
+        formatter: function (val) {
+          return (val).toFixed(2);
+        },
+      },
+      title: {
+        text: `${meeteenheid_value}`
+      },
+    },
+    xaxis: {
+      type: 'datetime',
+      title: {
+        text: 'Time'
       }
-    }
-  }
+    },
+    // tooltip: {
+    //   shared: true,
+    //   y: {
+    //     formatter: function (val) {
+    //       return (val / 1000000).toFixed(0)
+    //     }
+    //   }
+    // }
   };
 
   var chart = new ApexCharts(document.querySelector(".js-history__chart"), options);
   chart.render();
   console.log('Chart rendered')
 
+  html = ''
   htmlDeviceHistory.innerHTML = html
 }
 
@@ -270,15 +315,12 @@ const getTimeDifference = function (targetTime) {
   targetDateTime.setHours(targetHour);
   targetDateTime.setMinutes(targetMinute);
 
-  // Check if the target time is in the future (negative time difference)
   if (targetDateTime < currentTime) {
     targetDateTime.setDate(targetDateTime.getDate() + 1); // Move to the next day
   }
 
-  // Step 3: Calculate the time difference
   var timeDifferenceMs = targetDateTime.getTime() - currentTime.getTime();
 
-  // Step 4: Convert the time difference to hours and minutes
   var hours = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
   var minutes = Math.floor((timeDifferenceMs % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -301,7 +343,7 @@ const getDevices = function () {
 //   handleData(`http://${lanIP}/api/v1/devices/${id}/details/`, showError)
 // }
 
-const getDeviceHistory = function (id) {  
+const getDeviceHistory = function (id) {
   handleData(`http://${lanIP}/api/v1/devices/${id}/`, showHistory, showError)
 }
 
@@ -342,6 +384,16 @@ const listenToBtnDevice = function () {
     })
 }
 const listenToUIDetail = function () {
+}
+
+const listenToPowerbutton = function () {
+  const pwrbuttons = document.querySelectorAll('.js-powerbutton')
+  for (const pwrbtn of pwrbuttons) {
+    pwrbtn.addEventListener('click', function () {
+      console.log('Powerbutton Pressed, system shutting down...');
+      socketio.emit('F2B_system_shutdown')
+    })
+  }
 }
 
 const listenToUIDash = function () {
@@ -778,6 +830,7 @@ const init = function () {
     addMobileMenu()
   }
 
+  listenToPowerbutton()
 };
 
 document.addEventListener('DOMContentLoaded', init);

@@ -432,7 +432,7 @@ a:active {
   align-items: center;
 }
 .c-icon-button svg {
-  fill: currentColor;
+  fill: white;
 }
 
 /*

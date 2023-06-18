@@ -311,6 +311,10 @@ def change_config(dict_settings):
     print(settings)
     socketio.emit('B2F_config_update')
 
+@socketio.on('F2B_system_shutdown')
+def power_off():
+    togglePowerButton_callback('app')
+
 if __name__ == '__main__':
     try:
         start_thread()

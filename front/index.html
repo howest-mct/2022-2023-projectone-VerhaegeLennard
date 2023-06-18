@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>EiQ - Dashboard</title>
+    <title>Rooster - Dashboard</title>
     <link rel="stylesheet" href="style/screen.css">
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     <script src="script/datahandler.js"></script>
     <script src="script/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="icon" type="image/x-icon" href="Assets/favicon.ico">
 </head>
 
 <body class="js-dashboard">
@@ -23,10 +24,7 @@
             </button>
             <h2 class="c-logo">
                 <a class="c-logo__link" href="index.html">
-                    <svg class="c-logo__symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.768 32">
-                        <title>MCT</title>
-                        <path d="M-955.584,341.472l-2.942-1.7v-5.662l4.91,2.71,4.91-2.71v5.662l-2.942,1.7a3.932,3.932,0,0,1-1.968.528A3.932,3.932,0,0,1-955.584,341.472Zm12.565-20.839a.848.848,0,0,0-1.272-.734l-9.318,5.257-9.332-5.257a.848.848,0,0,0-1.272.734v15.857l-1.819-1.05A3.939,3.939,0,0,1-968,332.033V319.967a3.939,3.939,0,0,1,1.968-3.408l10.448-6.031a3.933,3.933,0,0,1,3.936,0l10.448,6.031a3.938,3.938,0,0,1,1.968,3.408v12.065a3.938,3.938,0,0,1-1.968,3.408l-1.819,1.05Z" transform="translate(968 -310)" />
-                    </svg>
+                    <img class="c-logo__symbol" src="Assets/Rooster 512.png" alt="Rooster logo">
                 </a>
             </h2>
             <nav class="c-nav c-nav--header">
@@ -39,7 +37,11 @@
                     </li>
                 </ul>
             </nav>
-            <img class="c-header__user" src="img/avatar.jpg" alt="Avatar of the user">
+            <div class="c-header__user c-icon-button js-powerbutton">
+                <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                    <path d="M450-438v-406h60v406h-60Zm30 320q-74 0-139.5-28.5T226-224q-49-49-77.5-114.5T120-478q0-80 34-149.5T250-751l42 42q-53 43-82.5 102.5T180-478.022Q180-353 267.5-265.5 355-178 480-178q125.357 0 212.679-87.5Q780-353 780-478.022 780-547 750.5-607.5 721-668 670-709l43-42q60 51 93.5 122T840-478q0 74-28.5 139.5t-77 114.5q-48.5 49-114 77.5T480-118Z" />
+                </svg>
+            </div>
         </div>
     </header>
     <main class="c-main o-row">
@@ -48,7 +50,9 @@
                 <div class="o-layout o-layout--gutter o-layout--justify-space-between o-layout--align-center">
                     <div class="o-layout__item u-flex-basis-auto">
                         <div class="c-author">
-                            <svg class="c-icon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M480-255q61-15 100.5-70T620-446.279v-88.954L480-605l-140 69.767v88.954q0 66.279 39.812 121.297Q419.625-269.965 480-255ZM160-120v-480l320-240 320 240v480H160Zm70-70h500v-375L480-753 230-565.333V-190Zm250-282Z"/></svg>
+                            <svg class="c-icon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+                                <path d="M480-255q61-15 100.5-70T620-446.279v-88.954L480-605l-140 69.767v88.954q0 66.279 39.812 121.297Q419.625-269.965 480-255ZM160-120v-480l320-240 320 240v480H160Zm70-70h500v-375L480-753 230-565.333V-190Zm250-282Z" />
+                            </svg>
                             <div class="c-author__content">
                                 <h1 class="c-author__name u-mb-clear js-username">Lennard's Chicken Coop</h1>
                                 <p class="c-author__meta u-mb-clear js-feedingtime">System running since: </p>
@@ -256,17 +260,9 @@
                     <li class="c-nav__item c-nav__item--active">
                         <a class="c-nav__link" href="index.html">Dashboards</a>
                     </li>
-                    <!-- niet goed
-                    <li class="c-nav__item">
-                        <a class="c-nav__link" href="#!">Jobs</a>
-                    </li> -->
-                    <!-- wel goed -->
                     <li class="c-nav__item">
                         <a class="c-nav__link" href="details.html">Details</a>
                     </li>
-                    <!-- <li class="c-nav__item">
-                        <a class="c-nav__link" href="#!">Company</a>
-                    </li> -->
                 </ul>
             </nav>
         </div>
@@ -277,41 +273,41 @@
             <div class="o-container">
                 <div class="o-layout o-layout--justify-center">
                     <div class="c-popup__wrap">
-                    <div class="c-card">
-                        <div class="c-card__body o-container">
-                            <div class="o-layout o-layout--justify-space-between">
-                                <h2 class="u-mb-clear">Change Configuration</h2>
-                                <button class="o-button-reset c-icon-button js-toggle-configuration">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
-                                        <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                                    </svg>
-                                </button>
+                        <div class="c-card">
+                            <div class="c-card__body o-container">
+                                <div class="o-layout o-layout--justify-space-between">
+                                    <h2 class="u-mb-clear">Change Configuration</h2>
+                                    <button class="o-button-reset c-icon-button js-toggle-configuration">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+                                            <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="c-card__body">
-                            <div class="js-config-form o-layout">
-                                <div class="o-layout__item u-mb-xxs">
-                                    <h2 class="u-mb-clear">Select your mode:</h2>
-                                    <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-id="manual">
-                                    <label for="radioBtn1">Manual time selection</label><br>
-                                    <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-id="auto">
-                                    <label for="radioBtn2">Automatic time selection</label><br>
+                            <div class="c-card__body">
+                                <div class="js-config-form o-layout">
+                                    <div class="o-layout__item u-mb-xxs">
+                                        <h2 class="u-mb-clear">Select your mode:</h2>
+                                        <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn1" value="Manual" data-id="manual">
+                                        <label for="radioBtn1">Manual time selection</label><br>
+                                        <input class="js-time_mode_selection" type="radio" name="TimeMode" id="radioBtn2" value="Auto" data-id="auto">
+                                        <label for="radioBtn2">Automatic time selection</label><br>
+                                    </div>
+                                    <div class="js-time_selection o-layout__item u-mb-xs">
+                                    </div>
+                                    <div class="o-layout__item u-mb-xxs">
+                                        <h2 class="u-mb-clear">Select a feeding moment:</h2>
+                                        <label for="time2">Feeding</label>
+                                        <input class="js-config-input" type="time" id="time2" name="time2" data-id="VoederTijd"><br>
+                                    </div>
+                                    <input class="js-submit-config js-toggle-configuration o-button-reset c-button c-button--primary" type="submit" value="Submit">
                                 </div>
-                                <div class="js-time_selection o-layout__item u-mb-xs">
-                                </div>
-                                <div class="o-layout__item u-mb-xxs">
-                                    <h2 class="u-mb-clear">Select a feeding moment:</h2>
-                                    <label for="time2">Feeding</label>
-                                    <input class="js-config-input" type="time" id="time2" name="time2" data-id="VoederTijd"><br>
-                                </div>
-                                <input class="js-submit-config js-toggle-configuration o-button-reset c-button c-button--primary" type="submit" value="Submit">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 
