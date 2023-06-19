@@ -178,7 +178,7 @@ def run_hardware():
             print("Er wordt voer gegeven")
             lcd.send_instruction(0b00000001)
             lcd.write_message("Grain dispensing...")
-            motor_voer.draai(-500, 0.001)
+            motor_voer.draai(-1000, 0.001)
             DataRepository.add_history(
                 device_id=5, actie_id=2, waarde=1, commentaar="Er werd 1 portie voer gegeven")
             status_knop_voer = 0
