@@ -154,7 +154,7 @@ def run_hardware():
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door closing ...")
-                motor_deur.draai(-4700, 0.001)
+                motor_deur.draai(-4900, 0.001)
                 socketio.emit('B2F_current_door_icon', {'status': 'closed'})
                 status_luik = 0
             if status_luik == 11:
@@ -164,7 +164,7 @@ def run_hardware():
                 socketio.emit('B2F_new_timeline')
                 lcd.send_instruction(0b00000001)
                 lcd.write_message("Door opening ...")
-                motor_deur.draai(7000, 0.001)
+                motor_deur.draai(6850, 0.001)
                 socketio.emit('B2F_current_door_icon', {'status': 'opened'})
                 status_luik = 0
             status_knop_luik = 0
