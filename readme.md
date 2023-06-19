@@ -6,4 +6,4 @@
 
 **Projectsamenvatting in max 10 woorden:**  Slim kippensysteem met monitoring, voedersysteem en automatisch luik
 
-**Projecttitel:** EiQ
+**Projecttitel:** Rooster
