@@ -38,16 +38,17 @@ luchtvochtigheid = None
 def toonOpLCD():
     lcd.send_instruction(0b00000001)  # wis het scherm
     # Haal de ip adressen op, split ze per ip
-    byte_ips = check_output(['hostname', '--all-ip-addresses'])
+    byte_ips = check_output(['hostname', '-I'])
     ips = byte_ips.decode("utf-8")
-    adresses = ips.split(" ")
+    adresses = ips.split()[0]
+    print(adresses)
     # stuur op de eerste lijn de 1e ip
     if len(adresses) >= 1:
-        lcd.write_message(adresses[0])
+        lcd.write_message(adresses)
     # selecteer de 2de lijn en zend de 2de ip
     if len(adresses) >= 2:
         lcd.send_instruction(0b11000000)
-        lcd.write_message(adresses[1])
+        lcd.write_message('Search ip -> app')
 
 
 def pushButtonLuik_callback(channel):
