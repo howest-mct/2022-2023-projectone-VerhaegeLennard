@@ -100,7 +100,6 @@ def run_hardware():
     executed_once_close = False
     executed_once_feed = False
     reset_var_last_run = time.time()
-    toonOpLCD()
     while True:
         now = time.time()
         modus = settings["Modus"]
@@ -211,6 +210,7 @@ def read_sensors():
     #             'lichtintensiteit': lichtintensiteit, 'eCO2': eCO2, 'TVOC': TVOC, 'temperatuur': temperatuur, 'luchtvochtigheid': luchtvochtigheid})
     # wait 10s with sleep sintead of threading.Timer, so we can use daemon
     time.sleep(10)
+    toonOpLCD()
     read_sensors_last_run = time.time()
     while True:
         now = time.time()
