@@ -100,6 +100,7 @@ def run_hardware():
     executed_once_close = False
     executed_once_feed = False
     reset_var_last_run = time.time()
+    toonOpLCD()
     while True:
         now = time.time()
         modus = settings["Modus"]

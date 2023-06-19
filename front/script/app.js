@@ -179,6 +179,18 @@ const showNewSensorValues = function (jsonObject) {
   let htmlCo2Value = document.querySelector('.js-co2value')
   let htmlHumidity = document.querySelector('.js-humidity')
   let htmlBrightness = document.querySelector('.js-brightness')
+  if (jsonObject.temperatuur == null) {
+    jsonObject.temperatuur = 0
+  }
+  if (jsonObject.eCO2 == null) {
+    jsonObject.eCO2 = 0
+  }
+  if (jsonObject.luchtvochtigheid == null) {
+    jsonObject.luchtvochtigheid = 0
+  }
+  if (jsonObject.lichtintensiteit == null) {
+    jsonObject.lichtintensiteit = 0
+  }
   htmlTempValue.innerHTML = Math.round((jsonObject.temperatuur + Number.EPSILON) * 100) / 100
   ChartTemp.updateSeries([[valueToPercent(jsonObject.temperatuur, TempMinValue, TempMaxValue)]])
   htmlCo2Value.innerHTML = Math.round((jsonObject.eCO2 + Number.EPSILON) * 100) / 100
@@ -223,7 +235,6 @@ const showTimeline = function (jsonObject) {
 }
 
 const showConfig = function (jsonObject) {
-  console.log(jsonObject)
   htmlDoorModus = document.querySelector('.js-door-setting')
   modusDeur = jsonObject.Modus
   if (modusDeur == 1) {
@@ -330,7 +341,7 @@ const getTimeDifference = function (targetTime) {
 // Usage example
 var targetTime = '14:30';
 var timeDifference = getTimeDifference(targetTime);
-console.log(timeDifference.hours + ' hours and ' + timeDifference.minutes + ' minutes');
+// console.log(timeDifference.hours + ' hours and ' + timeDifference.minutes + ' minutes');
 
 // #endregion
 
