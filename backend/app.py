@@ -46,7 +46,6 @@ def toonOpLCD():
     if len(adresses) >= 1:
         lcd.write_message(adresses)
     # selecteer de 2de lijn en zend de 2de ip
-    if len(adresses) >= 2:
         lcd.send_instruction(0b11000000)
         lcd.write_message('Search ip -> app')
 
@@ -73,7 +72,6 @@ def togglePowerButton_callback(channel):
 
 
 def setup():
-    toonOpLCD()
     GPIO.setmode(GPIO.BCM)
     # GPIO.setup([pushButtonLuik, pushButtonVoer], GPIO.IN, GPIO.PUD_UP)
     GPIO.setup(pushButtonLuik, GPIO.IN, GPIO.PUD_UP)
